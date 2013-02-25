@@ -1,3 +1,7 @@
+pan100_mood_log:
+    resource: "@Pan100MoodLogBundle/Resources/config/routing.yml"
+    prefix:   /
+
 # Internal routing configuration to handle ESI
 # ****** WARNING ******
 # This route should be enabled with caution as it can open a security vulnerability
