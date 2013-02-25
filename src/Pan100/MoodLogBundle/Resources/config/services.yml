@@ -1,0 +1,7 @@
+parameters:
+#    pan100_mood_log.example.class: Pan100\MoodLogBundle\Example
+
+services:
+#    pan100_mood_log.example:
+#        class: %pan100_mood_log.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

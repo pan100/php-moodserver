@@ -1,0 +1,3 @@
+pan100_mood_log_homepage:
+    pattern:  /mood/{name}
+    defaults: { _controller: Pan100MoodLogBundle:Default:index }
