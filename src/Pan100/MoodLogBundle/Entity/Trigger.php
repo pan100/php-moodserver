@@ -12,14 +12,16 @@ class Trigger
 {
     /**
      * @ORM\Id
-     * @ORM\Column(length="128")
+     * @ORM\Column(length=128)
      */
     private $triggertext;
-    //TODO fiks DocBlock med mange til mange
+    /**@ORM\Id
+     * @ORM\ManyToMany(targetEntity="Day", mappedBy="triggers")
+     **/
     private $days;       
 
     public function __construct()
     {
-        parent::__construct();
+        $this->days = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

@@ -35,7 +35,6 @@ class User extends BaseUser
 
     public function __construct()
     {
-        parent::__construct();
             $this->hasAccessTo = new \Doctrine\Common\Collections\ArrayCollection();
             $this->hasAccessToMe = new \Doctrine\Common\Collections\ArrayCollection();
     }

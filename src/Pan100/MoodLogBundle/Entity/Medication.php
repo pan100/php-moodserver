@@ -10,24 +10,24 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Medication
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="date")
-     */
-    private $date;
 
     /**
+     * @ORM\Id
      * @ORM\Column(length=32)
      */
     private $name;
 
     /**
+     * @ORM\Id    
      * @ORM\Column(type="integer", nullable=TRUE)
      */
-    private $amountMg;          
+    private $amount_mg;
+    /**
+     * @ORM\ManyToMany(targetEntity="Day", mappedBy="medications")
+     **/
+    private $days;          
 
     public function __construct()
     {
-        parent::__construct();
     }
 }

@@ -46,14 +46,25 @@ class Day
      */
     private $diaryText;
     /**
-     * @ORM\ManyToMany(targetEntity="trigger", mappedBy="hasAccessToMe")
+     * @ORM\ManyToMany(targetEntity="Trigger", inversedBy="days")
+     * @ORM\JoinTable(name="triggers_days",
+     *      joinColumns={@ORM\JoinColumn(name="day_date", referencedColumnName="date")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="triggertext", referencedColumnName="triggertext")}
+        )
      **/
-    private $triggers = null;
-    //TODO DocBlock manyToMany
+    private $triggers;
+    /**
+     * @ORM\ManyToMany(targetEntity="Medication", inversedBy="days")
+     * @ORM\JoinTable(name="medications_date",
+     *      joinColumns={@ORM\JoinColumn(name="day_date", referencedColumnName="date")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="med_name", referencedColumnName="name"), @ORM\JoinColumn(name="amount_mg", referencedColumnName="amount_mg")}
+        )
+     **/
     private $medications = null;        
 
     public function __construct()
     {
-        parent::__construct();
+        $this->triggers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medications = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
