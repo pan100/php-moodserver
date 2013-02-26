@@ -67,4 +67,231 @@ class Day
         $this->triggers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->medications = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Day
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set moodLow
+     *
+     * @param integer $moodLow
+     * @return Day
+     */
+    public function setMoodLow($moodLow)
+    {
+        $this->moodLow = $moodLow;
+    
+        return $this;
+    }
+
+    /**
+     * Get moodLow
+     *
+     * @return integer 
+     */
+    public function getMoodLow()
+    {
+        return $this->moodLow;
+    }
+
+    /**
+     * Set moodHigh
+     *
+     * @param integer $moodHigh
+     * @return Day
+     */
+    public function setMoodHigh($moodHigh)
+    {
+        $this->moodHigh = $moodHigh;
+    
+        return $this;
+    }
+
+    /**
+     * Get moodHigh
+     *
+     * @return integer 
+     */
+    public function getMoodHigh()
+    {
+        return $this->moodHigh;
+    }
+
+    /**
+     * Set sleepHours
+     *
+     * @param integer $sleepHours
+     * @return Day
+     */
+    public function setSleepHours($sleepHours)
+    {
+        $this->sleepHours = $sleepHours;
+    
+        return $this;
+    }
+
+    /**
+     * Get sleepHours
+     *
+     * @return integer 
+     */
+    public function getSleepHours()
+    {
+        return $this->sleepHours;
+    }
+
+    /**
+     * Set anxiety
+     *
+     * @param integer $anxiety
+     * @return Day
+     */
+    public function setAnxiety($anxiety)
+    {
+        $this->anxiety = $anxiety;
+    
+        return $this;
+    }
+
+    /**
+     * Get anxiety
+     *
+     * @return integer 
+     */
+    public function getAnxiety()
+    {
+        return $this->anxiety;
+    }
+
+    /**
+     * Set irritability
+     *
+     * @param integer $irritability
+     * @return Day
+     */
+    public function setIrritability($irritability)
+    {
+        $this->irritability = $irritability;
+    
+        return $this;
+    }
+
+    /**
+     * Get irritability
+     *
+     * @return integer 
+     */
+    public function getIrritability()
+    {
+        return $this->irritability;
+    }
+
+    /**
+     * Set diaryText
+     *
+     * @param string $diaryText
+     * @return Day
+     */
+    public function setDiaryText($diaryText)
+    {
+        $this->diaryText = $diaryText;
+    
+        return $this;
+    }
+
+    /**
+     * Get diaryText
+     *
+     * @return string 
+     */
+    public function getDiaryText()
+    {
+        return $this->diaryText;
+    }
+
+    /**
+     * Add triggers
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Trigger $triggers
+     * @return Day
+     */
+    public function addTrigger(\Pan100\MoodLogBundle\Entity\Trigger $triggers)
+    {
+        $this->triggers[] = $triggers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove triggers
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Trigger $triggers
+     */
+    public function removeTrigger(\Pan100\MoodLogBundle\Entity\Trigger $triggers)
+    {
+        $this->triggers->removeElement($triggers);
+    }
+
+    /**
+     * Get triggers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTriggers()
+    {
+        return $this->triggers;
+    }
+
+    /**
+     * Add medications
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Medication $medications
+     * @return Day
+     */
+    public function addMedication(\Pan100\MoodLogBundle\Entity\Medication $medications)
+    {
+        $this->medications[] = $medications;
+    
+        return $this;
+    }
+
+    /**
+     * Remove medications
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Medication $medications
+     */
+    public function removeMedication(\Pan100\MoodLogBundle\Entity\Medication $medications)
+    {
+        $this->medications->removeElement($medications);
+    }
+
+    /**
+     * Get medications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMedications()
+    {
+        return $this->medications;
+    }
 }

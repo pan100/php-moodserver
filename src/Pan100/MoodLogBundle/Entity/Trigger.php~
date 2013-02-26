@@ -24,27 +24,4 @@ class Trigger
     {
         $this->days = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    /**
-     * Set triggertext
-     *
-     * @param string $triggertext
-     * @return Trigger
-     */
-    public function setTriggertext($triggertext)
-    {
-        $this->triggertext = $triggertext;
-    
-        return $this;
-    }
-
-    /**
-     * Get triggertext
-     *
-     * @return string 
-     */
-    public function getTriggertext()
-    {
-        return $this->triggertext;
-    }
 }
