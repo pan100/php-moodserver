@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Day
 {
-    /**
+        /**
      * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="date")
      */
     private $date;
