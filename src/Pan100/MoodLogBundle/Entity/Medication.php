@@ -39,6 +39,7 @@ class Medication
      */
     public function setName($name)
     {
+        $name = strtolower($name);
         $this->name = $name;
     
         return $this;

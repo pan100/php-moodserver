@@ -47,8 +47,11 @@ class CreateMockDataCommand extends ContainerAwareCommand
             $dateTwoWeeksAgo->sub(new \DateInterval("P14D"));
 
             for($i = 1; $i <= 14; $i++) {
-                $output->writeln("<info>Adding Day entities from " . $dateTwoWeeksAgo->format("F j, Y") . " and up to today</info>");
+                $output->writeln("<info>Adding Day entities for " . $dateTwoWeeksAgo->format("F j, Y") . "</info>");
                 //add Day entry with data
+
+                $em = $this->getContainer()->get('doctrine')->getEntityManager();
+
                 $day = new Day();
                 $day->setDate($dateTwoWeeksAgo);
                 //random number for the high
@@ -62,14 +65,23 @@ class CreateMockDataCommand extends ContainerAwareCommand
                 $day->setAnxiety(rand(0,3));
                 $day->setIrritability(rand(0,3));
                 $day->setDiaryText("Just as yesterday - did nothing");
-                //add medicines
+                //add medicines - remember always lower case
+                $medObj = $this->getContainer()->get('doctrine')->getRepository('Pan100\MoodLogBundle\Entity\Medication')->findOneBy(array('name' => 'lithium'));
+                    //check if the medicine exists and create it otherwise
+                if($medObj == null) {
+                    $med = new Medication();
+                    $med->setName("Lithium");
+                    $med->setAmountMg(100);
+                    $medObj = $med;
+                    $em->persist($medObj);
+                }
+
+                $day->addMedication($medObj);
                 //add triggers
 
                 //persist
-                $em = $this->getContainer()->get('doctrine')->getEntityManager();
                 $em->persist($day);
                 $em->flush();
-
                 //remember to set date one day ahead
                 $dateTwoWeeksAgo->modify('+1 day');
             }
@@ -94,17 +106,11 @@ class CreateMockDataCommand extends ContainerAwareCommand
             );
             $input = new ArrayInput($arguments);
             $returnCode = $command->run($input, $output);
-
-            //retrieve the user and add it to the Patient group
-            //DONT KNOW IF THIS WORKS YET
                 $user = $this->userManager->findUserByUsername($name);
-//                $group = $this->groupManager->findGroupByName("Patient");
                 $user->addRole("ROLE_MEDIC");
                 if($isMedic) {
-//                    $group = $this->userManager->findGroupByName("Medic");
                     $user->addRole("ROLE_PATIENT");
                 }
-//                $user->addGroup($group);
                 $this->userManager->updateUser($user);
 
                 return $user;
