@@ -33,6 +33,12 @@ class User extends BaseUser
      **/
     private $hasAccessToMe;    
 
+    /**
+     * @ORM/ManyToMany(targetEntity="Day")
+     * @ORM/JoinTable(name="users_days"), joincolumns={@ORMJoinColumn(name=user_id, referencedColumnName="id"))},
+     * inverseJoinColumns={@ORM/JoinColumn(name="day_id", referencedColumnName)"id"), unique=true)}
+     */
+
     public function __construct()
     {
         parent::__construct();

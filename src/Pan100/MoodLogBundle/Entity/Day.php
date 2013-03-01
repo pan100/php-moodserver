@@ -22,7 +22,13 @@ class Day
      */
     private $date;
     
-    //TODO Spesifiser docblock foreign key og id
+    /**
+     * @ORM\ManyToMany(targetEntity="User")
+     * @ORM\JoinTable(name="days_users",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true)}
+     *      )
+     **/
     private $user_id;
 
     /**
