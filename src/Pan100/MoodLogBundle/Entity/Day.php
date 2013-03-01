@@ -23,11 +23,8 @@ class Day
     private $date;
     
     /**
-     * @ORM\ManyToMany(targetEntity="User")
-     * @ORM\JoinTable(name="days_users",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true)}
-     *      )
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user_id;
 
@@ -315,5 +312,28 @@ class Day
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set user_id
+     *
+     * @param \Pan100\MoodLogBundle\Entity\User $userId
+     * @return Day
+     */
+    public function setUserId(\Pan100\MoodLogBundle\Entity\User $userId = null)
+    {
+        $this->user_id = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return \Pan100\MoodLogBundle\Entity\User 
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 }

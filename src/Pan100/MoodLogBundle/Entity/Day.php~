@@ -22,7 +22,10 @@ class Day
      */
     private $date;
     
-    //TODO Spesifiser docblock foreign key og id
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
     private $user_id;
 
     /**

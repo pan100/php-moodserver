@@ -77,6 +77,8 @@ class CreateMockDataCommand extends ContainerAwareCommand
                 }
 
                 $day->addMedication($medObj);
+
+                $day->setUserId($user);
                 //add triggers
 
                 //persist
@@ -85,6 +87,12 @@ class CreateMockDataCommand extends ContainerAwareCommand
                 //remember to set date one day ahead
                 $dateTwoWeeksAgo->modify('+1 day');
             }
+
+            $output->writeln("<info>Creating user with name \"drjones\"as a medic...</info>");
+            $user2 = $this->createUser("drjones", "drjones@mockdata.no", "passord", true, $output);
+            $output->writeln("<info>Linking \"drjones\" with \"Ola_Nordmann\"</info>");
+            $user->addHasAccessToMe($user2);
+            $this->userManager->updateUser($user);
 
         }
         elseif($confirm == "N" || $confirm == "n") {
@@ -107,8 +115,11 @@ class CreateMockDataCommand extends ContainerAwareCommand
             $input = new ArrayInput($arguments);
             $returnCode = $command->run($input, $output);
                 $user = $this->userManager->findUserByUsername($name);
-                $user->addRole("ROLE_MEDIC");
+                
                 if($isMedic) {
+                    $user->addRole("ROLE_MEDIC");
+                }
+                else {
                     $user->addRole("ROLE_PATIENT");
                 }
                 $this->userManager->updateUser($user);
