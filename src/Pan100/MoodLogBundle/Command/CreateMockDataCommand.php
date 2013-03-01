@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use FOS\UserBundle\Doctrine\UserManager;
-use FOS\UserBundle\Doctrine\GroupManager;
 
 use Pan100\MoodLogBundle\Entity\Day;
 use Pan100\MoodLogBundle\Entity\Medication;
@@ -18,7 +17,6 @@ use Pan100\MoodLogBundle\Entity\Trigger;
 class CreateMockDataCommand extends ContainerAwareCommand
 {
     private $userManager;
-    private $groupManager;
 
     protected function configure()
     {
@@ -32,7 +30,6 @@ class CreateMockDataCommand extends ContainerAwareCommand
     {
 
         $this->userManager = $this->getContainer()->get('fos_user.user_manager');
-        $this->groupManager = $this->getContainer()->get('fos_user.group_manager');
 
         $output->writeln("<info>This command creates a few testusers for the MoodLogBundle</info>");
         $confirm = $this->getHelperSet()->get('dialog')->ask($output, "<question>Are you sure? Y or N - </question>");
