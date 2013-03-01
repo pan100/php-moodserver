@@ -52,16 +52,7 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
-    }
-
-     /**
-     * @ORM\ManyToMany(targetEntity="Pan100\MoodLogBundle\Entity\Group")
-     * @ORM\JoinTable(name="fos_user_user_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
-     */
-    protected $groups;   
+    }  
 
     /**
      * Add hasAccessTo
