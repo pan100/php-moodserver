@@ -8,6 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @ORM\AttributeOverrides({
+ *              @ORM\AttributeOverride(name="email", column=@ORM\Column(nullable=true)),
+ *              @ORM\AttributeOverride(name="emailCanonical", column=@ORM\Column(nullable=true, unique=false))
+ *  
+ * })  
  */
 class User extends BaseUser
 {
@@ -31,13 +36,7 @@ class User extends BaseUser
      *      inverseJoinColumns={@ORM\JoinColumn(name="accessor_id", referencedColumnName="id")}
      *      )
      **/
-    private $hasAccessToMe;    
-
-    /**
-     * @ORM/ManyToMany(targetEntity="Day")
-     * @ORM/JoinTable(name="users_days"), joincolumns={@ORMJoinColumn(name=user_id, referencedColumnName="id"))},
-     * inverseJoinColumns={@ORM/JoinColumn(name="day_id", referencedColumnName)"id"), unique=true)}
-     */
+    private $hasAccessToMe; 
 
     public function __construct()
     {
@@ -118,5 +117,51 @@ class User extends BaseUser
     public function getHasAccessToMe()
     {
         return $this->hasAccessToMe;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set emailCanonical
+     *
+     * @param string $emailCanonical
+     * @return User
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
+    
+        return $this;
+    }
+
+    /**
+     * Get emailCanonical
+     *
+     * @return string 
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
     }
 }

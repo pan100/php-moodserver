@@ -31,13 +31,18 @@ class User extends BaseUser
      *      inverseJoinColumns={@ORM\JoinColumn(name="accessor_id", referencedColumnName="id")}
      *      )
      **/
-    private $hasAccessToMe;    
+    private $hasAccessToMe; 
+
 
     /**
-     * @ORM/ManyToMany(targetEntity="Day")
-     * @ORM/JoinTable(name="users_days"), joincolumns={@ORMJoinColumn(name=user_id, referencedColumnName="id"))},
-     * inverseJoinColumns={@ORM/JoinColumn(name="day_id", referencedColumnName)"id"), unique=true)}
-     */
+    *   @ORM\Column(nullable=true)
+    **/
+    protected $email;
+
+    /**
+    *   @ORM\Column(nullable=true)
+    **/
+    protected $emailCanonical; 
 
     public function __construct()
     {

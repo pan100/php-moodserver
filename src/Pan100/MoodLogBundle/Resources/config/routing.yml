@@ -1,3 +1,6 @@
-pan100_mood_log_homepage:
+pan100_mood_log_test:
     pattern:  /mood/{name}
+    defaults: { _controller: Pan100MoodLogBundle:Default:hello }
+pan100_mood_log_front:
+    pattern: /
     defaults: { _controller: Pan100MoodLogBundle:Default:index }
