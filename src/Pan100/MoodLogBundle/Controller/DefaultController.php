@@ -19,8 +19,4 @@ class DefaultController extends Controller
 		return $response;
 		
 	}
-    public function helloAction($name)
-    {
-        return $this->render('Pan100MoodLogBundle:Default:hello.html.twig', array('name' => $name));
-    }
 }
