@@ -1,3 +1,7 @@
 pan100_mood_log_front:
     pattern: /
-    defaults: { _controller: Pan100MoodLogBundle:Default:index , _locale: nb}
+    defaults: { _controller: Pan100MoodLogBundle:Default:index, _locale: nb}
+
+pan100_mood_log_report:
+    pattern: /patient
+    defaults: { _controller: Pan100MoodLogBundle:Patient:index, _locale: nb}
