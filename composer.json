@@ -20,7 +20,8 @@
         "jms/di-extra-bundle": "1.1.*",
         "kriswallsmith/assetic": "1.1.*@dev",
         "friendsofsymfony/user-bundle": "*",
-        "symfony/locale": "*"
+        "symfony/locale": "*",
+        "sonata-project/intl-bundle": "2.1.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

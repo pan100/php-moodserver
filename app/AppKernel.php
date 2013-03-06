@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Pan100\MoodLogBundle\Pan100MoodLogBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

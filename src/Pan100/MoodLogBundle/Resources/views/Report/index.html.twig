@@ -5,7 +5,7 @@
 <ul>
 {% for day in days %}
 	<li>
-        {{ day.date|date('Y-m-d') }}
+        {{ day.date|format_date('eeee d. LLLL') }}
     </li>    
 {% endfor %}
 </ul>
