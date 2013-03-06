@@ -7,6 +7,8 @@ security:
         FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
+        ROLE_PATIENT:     ROLE_USER
+        ROLE_MEDIC:       ROLE_USER
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
@@ -25,8 +27,7 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/patient, role: ROLE_PATIENT }
-        - { path: ^/medic, role: ROLE_MEDIC }
+        - { path: ^/report, role: ROLE_USER }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/admin/, role: ROLE_ADMIN }
