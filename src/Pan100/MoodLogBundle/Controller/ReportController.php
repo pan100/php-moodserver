@@ -12,10 +12,10 @@ class ReportController extends Controller
 
 		if($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
 
-			$loggedInUser = $this->getUser();
+			$days = $this->getUser()->getDays();
 
 			//render the logged in view(s)
-			$response = $this->render('Pan100MoodLogBundle:Report:index.html.twig');
+			$response = $this->render('Pan100MoodLogBundle:Report:index.html.twig', array('days' => $days));
 		}
 		else {
 			//redirect to the login controller

@@ -2,7 +2,11 @@
 
 {% block body %}
 <h1>Logget inn som {{ app.user.username }}{% if is_granted('ROLE_PATIENT') %} (pasient) {% endif %}</h1>
-
-
-
+<ul>
+{% for day in days %}
+	<li>
+        {{ day.date|date('Y-m-d') }}
+    </li>    
+{% endfor %}
+</ul>
 {% endblock %}

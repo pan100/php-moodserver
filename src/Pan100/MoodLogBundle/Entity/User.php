@@ -7,12 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
- * @ORM\AttributeOverrides({
- *              @ORM\AttributeOverride(name="email", column=@ORM\Column(nullable=true)),
- *              @ORM\AttributeOverride(name="emailCanonical", column=@ORM\Column(nullable=true, unique=false))
- *  
- * })  
  */
 class User extends BaseUser
 {
@@ -36,7 +30,14 @@ class User extends BaseUser
      *      inverseJoinColumns={@ORM\JoinColumn(name="accessor_id", referencedColumnName="id")}
      *      )
      **/
-    private $hasAccessToMe; 
+    protected $hasAccessToMe; 
+
+    // ...
+    /**
+     * @ORM\OneToMany(targetEntity="Day", mappedBy="user_id")
+     **/    
+
+    protected $days;
 
     public function __construct()
     {
@@ -163,5 +164,38 @@ class User extends BaseUser
     public function getEmailCanonical()
     {
         return $this->emailCanonical;
+    }
+
+    /**
+     * Add days
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Day $days
+     * @return User
+     */
+    public function addDay(\Pan100\MoodLogBundle\Entity\Day $days)
+    {
+        $this->days[] = $days;
+    
+        return $this;
+    }
+
+    /**
+     * Remove days
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Day $days
+     */
+    public function removeDay(\Pan100\MoodLogBundle\Entity\Day $days)
+    {
+        $this->days->removeElement($days);
+    }
+
+    /**
+     * Get days
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDays()
+    {
+        return $this->days;
     }
 }

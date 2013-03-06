@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
 {
@@ -31,18 +30,14 @@ class User extends BaseUser
      *      inverseJoinColumns={@ORM\JoinColumn(name="accessor_id", referencedColumnName="id")}
      *      )
      **/
-    private $hasAccessToMe; 
+    protected $hasAccessToMe; 
 
-
+    // ...
     /**
-    *   @ORM\Column(nullable=true)
-    **/
-    protected $email;
+     * @ORM\OneToMany(targetEntity="Day", mappedBy="user_id")
+     **/    
 
-    /**
-    *   @ORM\Column(nullable=true)
-    **/
-    protected $emailCanonical; 
+    protected $days;
 
     public function __construct()
     {
@@ -123,5 +118,84 @@ class User extends BaseUser
     public function getHasAccessToMe()
     {
         return $this->hasAccessToMe;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set emailCanonical
+     *
+     * @param string $emailCanonical
+     * @return User
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
+    
+        return $this;
+    }
+
+    /**
+     * Get emailCanonical
+     *
+     * @return string 
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
+    }
+
+    /**
+     * Add days
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Day $days
+     * @return User
+     */
+    public function addDay(\Pan100\MoodLogBundle\Entity\Day $days)
+    {
+        $this->days[] = $days;
+    
+        return $this;
+    }
+
+    /**
+     * Remove days
+     *
+     * @param \Pan100\MoodLogBundle\Entity\Day $days
+     */
+    public function removeDay(\Pan100\MoodLogBundle\Entity\Day $days)
+    {
+        $this->days->removeElement($days);
+    }
+
+    /**
+     * Get days
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDays()
+    {
+        return $this->days;
     }
 }

@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Day
 {
+
+    //uses a surrogate key due to bug in doctrine
         /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -23,7 +25,7 @@ class Day
     private $date;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="days")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user_id;
@@ -54,6 +56,7 @@ class Day
      * @ORM\Column(type="text", nullable=TRUE)
      */
     private $diaryText;
+    
     /**
      * @ORM\ManyToMany(targetEntity="Trigger", inversedBy="days")
      * @ORM\JoinTable(name="triggers_days",
