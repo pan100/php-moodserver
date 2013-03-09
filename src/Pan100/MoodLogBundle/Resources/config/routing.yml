@@ -5,3 +5,7 @@ pan100_mood_log_front:
 pan100_mood_log_report:
     pattern: /report
     defaults: { _controller: Pan100MoodLogBundle:Report:index, _locale: nb}
+
+pan100_mood_log_report_charttest:
+    pattern: /report/chart
+    defaults: { _controller: Pan100MoodLogBundle:Report:chart, _locale: nb}
