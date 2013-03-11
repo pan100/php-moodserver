@@ -9,3 +9,7 @@ pan100_mood_log_report:
 pan100_mood_log_report_charttest:
     pattern: /report/chart
     defaults: { _controller: Pan100MoodLogBundle:Report:chart, _locale: nb}
+
+pan100_mood_log_chart_lastWeek:
+    pattern: /report/lastweek
+    defaults: { _controller: Pan100MoodLogBundle:Report:lastWeek, _locale: nb}    

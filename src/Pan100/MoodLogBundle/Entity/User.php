@@ -190,7 +190,7 @@ class User extends BaseUser
     }
 
     /**
-     * Get days
+     * Get days - give integer $numberOfDays if you want to specify the number of days.
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
