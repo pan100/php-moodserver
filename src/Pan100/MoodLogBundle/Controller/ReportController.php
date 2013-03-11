@@ -36,19 +36,24 @@ class ReportController extends Controller
         $moodHigh = array();
 
         foreach ($days as $day) {
-            $MoodLow[] = $day->getMoodLow();
-            $moodHigh[] = $day->getMoodHigh();
+            $MoodLow[] = array('y' => $day->getMoodLow() -50, 'x'=>(string)$day->getDate()->getTimestamp() . "000");
+            $moodHigh[] = array('y'=>$day->getMoodHigh() -50, 'x'=>(string)$day->getDate()->getTimestamp() . "000");
         }
         // Chart
         $series = array(
-            array("name" => "Data Serie Name",    "data" => $MoodLow)
-        );
+            array("name" => "Høy",    "data" => $moodHigh, "color" => "#FF0000"),
+                   array("name" => "Lav",    "data" => $MoodLow)
+            );
 
         $ob = new Highchart();
         $ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
-        $ob->title->text('Chart Title');
-        $ob->xAxis->title(array('text'  => "Horizontal axis title"));
-        $ob->yAxis->title(array('text'  => "Vertical axis title"));
+        //$ob->chart->type("arearange"); //TODO
+        $ob->title->text('Humørsvingninger');
+        $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
+        $ob->xAxis->type("datetime");
+        $ob->xAxis->dateTimeLabelFormats(array('day' => "%e. %b"));
+        $ob->xAxis->title(array('text' => "Dato"));
+        $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
         $ob->series($series);
 
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
