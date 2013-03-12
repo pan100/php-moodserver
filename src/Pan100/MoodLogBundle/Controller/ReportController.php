@@ -71,7 +71,7 @@ class ReportController extends Controller
 
         //create an array consisting of 7 last days TODO - Do this as a query
         $daysLastWeek = array();
-        for ($i=0; $i < 7 ; $i++) { 
+        for ($i=1; $i < 8 ; $i++) { 
             $date = new \DateTime();
             $date->sub(new \DateInterval('P' . $i . 'D'));
             $daysLastWeek[] = $date;
@@ -79,7 +79,7 @@ class ReportController extends Controller
         }
 
         $mood = array();
-
+        $weekdayLabels = array();
         foreach ($daysLastWeek as $dayInWeek) {
             //figure out if this day has an entity, if not set null
             $hasDay = false;
@@ -90,13 +90,13 @@ class ReportController extends Controller
                 }
             }
             if($hasDay) {
-                $mood[] = array(array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh()));
+                $mood[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
             }
             else {
-                $mood[] = array(array("null", "null"));
+                $mood[] = array(null, null);
             }
-
-            
+            //store the weekdays as a string for the x axis
+            $weekdayLabels[] = $dayInWeek->format('Y-m-d');
         }
         // Chart
         $series = array(
@@ -105,17 +105,17 @@ class ReportController extends Controller
 
         $ob = new Highchart();
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
-        $ob->chart->type("columnrange");
+        $ob->chart->type("arearange");
 
 
         $ob->title->text('Humørsvingninger');
 
         $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
 
-        $ob->xAxis->type("datetime");
-        $ob->xAxis->dateTimeLabelFormats(array('day' => "%e. %b"));
 
+        $ob->xAxis->categories($weekdayLabels);
         $ob->xAxis->title(array('text' => "Dato"));
+
         $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
 
         $ob->series($series);
