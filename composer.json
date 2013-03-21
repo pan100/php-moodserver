@@ -23,7 +23,9 @@
         "symfony/locale": "*",
         "sonata-project/intl-bundle": "2.1.*@dev",
         "zendframework/zend-json": "2.1.*@dev",
-        "ob/highcharts-bundle": "dev-master"
+        "ob/highcharts-bundle": "dev-master",
+        "jms/serializer-bundle": "<1",
+        "friendsofsymfony/rest-bundle": "*"
 
     },
     "scripts": {
