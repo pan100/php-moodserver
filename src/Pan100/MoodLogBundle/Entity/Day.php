@@ -63,7 +63,7 @@ class Day
      *      joinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="triggertext", referencedColumnName="triggertext")})
      **/
-    private $triggers;
+    private $triggers = null;
     /**
      * @ORM\ManyToMany(targetEntity="Medication", inversedBy="days")
      * @ORM\JoinTable(name="medications_day_id",

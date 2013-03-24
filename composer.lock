@@ -1517,7 +1517,9 @@
             "time": "2013-03-07 15:36:02"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
@@ -1528,5 +1530,11 @@
         "sonata-project/intl-bundle": 20,
         "zendframework/zend-json": 20,
         "ob/highcharts-bundle": 20
-    }
+    },
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": [
+
+    ]
 }

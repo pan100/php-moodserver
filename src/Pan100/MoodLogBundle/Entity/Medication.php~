@@ -29,6 +29,7 @@ class Medication
 
     public function __construct()
     {
+        $this->days = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

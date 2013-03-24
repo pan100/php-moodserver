@@ -35,9 +35,9 @@ class CreateMockDataCommand extends ContainerAwareCommand
         $confirm = $this->getHelperSet()->get('dialog')->ask($output, "<question>Are you sure? Y or N - </question>");
 
         if($confirm == "Y" || $confirm == "y") {
-            $output->writeln("<info>Creating user with name \"Ola Nordmann\"as a patient...</info>");
+            $output->writeln("<info>Creating user with name \"Ola_Nordmann\"as a patient...</info>");
             $user = $this->createUser("Ola_Nordmann", "olanord@mockdata.no", "passord", false, $output);
-            $output->writeln("<info>Creating mockdata for patient with name \"Ola Nordmann\"</info>");
+            $output->writeln("<info>Creating mockdata for patient with name \"Ola_Nordmann\"</info>");
 
             //find the date for 14 days ago
             $dateTwoWeeksAgo = new \DateTime();
@@ -76,11 +76,21 @@ class CreateMockDataCommand extends ContainerAwareCommand
                 $day->addMedication($medObj);
 
                 $day->setUserId($user);
-                //add triggers
+                //add triggers randomly
+                if($triggerString = $this->returnRandomTrigger($output)) {
+                    $triggerObject = $this->getContainer()->get('doctrine')->getRepository('Pan100\MoodLogBundle\Entity\Trigger')->findOneBy(array('triggertext' => $triggerString));
+                    $output->writeln("<info>Hit random trigger lottery</info>");
+                    if($triggerObject == null) {
+                        $trigger = new Trigger();
+                        $trigger->setTriggertext($triggerString);
+                        $em->persist($trigger);
+                        $day->addTrigger($trigger);                        
+                    }
+                } 
 
                 //persist
                 $em->persist($day);
-                $em->flush();
+                $em->flush();               
                 //remember to set date one day ahead
                 $dateTwoWeeksAgo->modify('+1 day');
             }
@@ -96,7 +106,7 @@ class CreateMockDataCommand extends ContainerAwareCommand
             $output->writeln("<error>Aborting as requested</error>");
         }
         else {
-            $output->writeln("<error>wrong key</error>");
+            $output->writeln("<error>wrong key. Then we abort in this version as I don't care for refactoring right now</error>");
         }
     }
 
@@ -124,5 +134,16 @@ class CreateMockDataCommand extends ContainerAwareCommand
                 return $user;
     }
 
+    private function returnRandomTrigger($outputStream) {
+        $mockTriggers = array("chrush","argument","alcohol", "death in family");
+        if(rand(0,5) == 1) {
+            //return a random trigger
+            $randomString = $mockTriggers[array_rand($mockTriggers)];
+            $outputStream->writeln("<info>Returning " . $randomString . " from returnRandomTrigger()</info>");
+            return  $randomString;
+
+        }
+        return false;
+    }
 
 }

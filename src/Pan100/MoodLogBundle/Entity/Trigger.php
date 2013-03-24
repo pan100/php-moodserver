@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="trigger")
+ * @ORM\Table(name="mtrigger")
  */
 class Trigger
 {
     /**
-     * @ORM\Id
+     * @ORM\Id @ORM\Column(type="string")
      * @ORM\Column(length=128)
      */
     private $triggertext;
