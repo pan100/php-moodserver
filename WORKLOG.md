@@ -11,3 +11,5 @@ can call it a beta version 1.
 -removed doctrine fixtures bundle as I don't know how to use it with FOSUserBundle
 -changed name of table "trigger" for storing entity Trigger, as it was a reserved word in MySQL. Now it
 	is called "mtrigger" and it works.
+-removed AcmeDemoBundle folder in src
+-put triggers into twig template charttest

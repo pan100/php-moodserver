@@ -19,8 +19,17 @@
 	{% for day in days %}
       <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>
   <div>
+{% if day.triggers is not empty %}
+    <p><em>Denne dagen har registrerte triggere:</em></p>
+    <ul>
+        {% for trigger in day.triggers %}
+            <li>{{ trigger.triggertext }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <p><em>Logget data:</em></p>
         <ul>
-            <li>Antall timer søvn: {{ day.sleepHours }}</li>
+            <li>Antall timer søvn natten før: {{ day.sleepHours }}</li>
         </ul>
         <p><em>Dagbok: </em>{{ day.diaryText }}</p>
   </div>
