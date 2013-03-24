@@ -1,10 +1,28 @@
 <!-- Load jQuery from Google's CDN if needed -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
-
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
+{% javascripts '@Pan100MoodLogBundle/Resources/public/js/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 <script type="text/javascript">
     {{ chart(chart) }}
+      $(function() {
+    $( "#accordion" ).accordion();
+  });
 </script>
 
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+<div id="accordion">
+	{% for day in days %}
+      <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>
+  <div>
+        <ul>
+            <li>Antall timer søvn: {{ day.sleepHours }}</li>
+        </ul>
+        <p><em>Dagbok: </em>{{ day.diaryText }}</p>
+  </div>
+    {% endfor %}
+</div>

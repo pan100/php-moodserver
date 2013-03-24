@@ -7,9 +7,12 @@ use Pan100\MoodLogBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 
+use Symfony\Component\HttpFoundation\Response;
+
 
 class ReportController extends Controller
 {
+
 	public function indexAction() {
 
 		if($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -62,6 +65,17 @@ class ReportController extends Controller
     }
 
     public function lastWeekAction() {
+        $days = $this->getUser()->getDays();
+        $days = array_reverse($days->toArray());
+        $days = array_slice($days, 0,7);
+        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
+            'chart' => $this->getObObjectFrom(7), 'days' => $days
+        ));        
+    }
+
+    public function fromFirstAction() {
+
+        $em = $this->getDoctrine()->getManager();
 
         //DEBUG LINE
         $logger = $this->get('logger');
@@ -69,14 +83,40 @@ class ReportController extends Controller
         //get the data on the user
         $days = $this->getUser()->getDays();
 
-        //create an array consisting of 7 last days TODO - Do this as a query
+        //get the first day and find out how many days have passed
+        $query = $em->createQuery('SELECT d FROM Pan100MoodLogBundle:Day d ORDER BY d.date ASC');
+        $firstEntry = $query->setMaxResults(1);
+        $firstEntry = $query->getSingleResult();
+        $logger->info("first date is " . $firstEntry->getDate()->format('Y-m-d'));
+
+        //return new Response("first date is " . $firstEntry->getDate()->format('Y-m-d'));
+
+        //find out how many days have passed since the first day of logged data
+        $interval = $firstEntry->getDate()->diff(new \DateTime());
+        $logger->info($interval->format('%a days'));
+
+        //return new Response("first date is " . $firstEntry->getDate()->format('Y-m-d')
+        // . " and " . $interval->format('%R%a days') . " have passed");
+        //generate the report and show it in the view
+        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
+            'chart' => $this->getObObjectFrom($interval->d), 'days' => array_reverse($days->toArray())
+        )); 
+    }
+
+    private function getObObjectFrom($numberOfDaysBack) {
+        $ob = new Highchart();
+        $days = $this->getUser()->getDays();
+
+        //create an array consisting of the number of days back
         $daysLastWeek = array();
-        for ($i=1; $i < 8 ; $i++) { 
+        for ($i=1; $i < $numberOfDaysBack ; $i++) { 
             $date = new \DateTime();
             $date->sub(new \DateInterval('P' . $i . 'D'));
             $daysLastWeek[] = $date;
-                $logger->info('P' . $i . 'D');
         }
+
+        //reverse the array so that the timeline is shown correctly
+        $daysLastWeek = array_reverse($daysLastWeek);
 
         $mood = array();
         $weekdayLabels = array();
@@ -102,8 +142,6 @@ class ReportController extends Controller
         $series = array(
             array("name" => "Humør",    "data" => $mood)
             );
-
-        $ob = new Highchart();
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
         $ob->chart->type("arearange");
 
@@ -119,9 +157,6 @@ class ReportController extends Controller
         $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
 
         $ob->series($series);
-
-        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
-            'chart' => $ob
-        ));        
+        return $ob;
     }
 }

@@ -16,12 +16,8 @@ class Trigger
      */
     private $triggertext;
 
-    /**@ORM\Id
+    /**
      * @ORM\ManyToMany(targetEntity="Day", mappedBy="triggers")
-          * @ORM\JoinTable(name="triggers_days",
-     *      joinColumns={@ORM\JoinColumn(name="triggertext", referencedColumnName="triggertext")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id")}
-        )
      **/
     private $days;       
 
