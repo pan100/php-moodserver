@@ -22,9 +22,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Pan100\MoodLogBundle\Pan100MoodLogBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
-            new Ob\HighchartsBundle\ObHighchartsBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
-            new FOS\RestBundle\FOSRestBundle()
+            new Ob\HighchartsBundle\ObHighchartsBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

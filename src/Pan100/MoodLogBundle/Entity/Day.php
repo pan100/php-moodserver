@@ -12,7 +12,7 @@ class Day
 {
 
     //uses a surrogate key due to bug in doctrine
-        /**
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -61,16 +61,14 @@ class Day
      * @ORM\ManyToMany(targetEntity="Trigger", inversedBy="days")
      * @ORM\JoinTable(name="triggers_days",
      *      joinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="triggertext", referencedColumnName="triggertext")}
-        )
+     *      inverseJoinColumns={@ORM\JoinColumn(name="triggertext", referencedColumnName="triggertext")})
      **/
     private $triggers;
     /**
      * @ORM\ManyToMany(targetEntity="Medication", inversedBy="days")
      * @ORM\JoinTable(name="medications_day_id",
      *      joinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="med_name", referencedColumnName="name"), @ORM\JoinColumn(name="amount_mg", referencedColumnName="amount_mg")}
-        )
+     *      inverseJoinColumns={@ORM\JoinColumn(name="med_name", referencedColumnName="name"), @ORM\JoinColumn(name="amount_mg", referencedColumnName="amount_mg")})
      **/
     private $medications = null;        
 
