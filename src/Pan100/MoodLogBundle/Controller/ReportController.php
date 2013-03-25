@@ -153,7 +153,8 @@ class ReportController extends Controller
 
         $ob->xAxis->categories($weekdayLabels);
         $ob->xAxis->title(array('text' => "Dato"));
-
+        $ob->yAxis->max(50);
+        $ob->yAxis->min(-50);
         $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
 
         $ob->series($series);

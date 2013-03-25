@@ -7,6 +7,8 @@ can call it a beta version 1.
 25.03.2012
 
 -Worked with templates and renamed routes for the templates to reference easier
+-set min and max range of graph from -50 to 50
+
 
 24.03.2012
 
