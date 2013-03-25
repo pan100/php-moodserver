@@ -1,18 +1,21 @@
-<!-- Load jQuery from Google's CDN if needed -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+{% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
+
+{% block title %}Rapport for (Pasientnavn her){% endblock %}
+
+{% block scriptextras %}
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
-{% javascripts '@Pan100MoodLogBundle/Resources/public/js/*' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
 <script type="text/javascript">
     {{ chart(chart) }}
       $(function() {
     $( "#accordion" ).accordion();
   });
 </script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
+{% endblock %}
 
+
+{% block body %}
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 <div id="accordion">
@@ -35,3 +38,4 @@
   </div>
     {% endfor %}
 </div>
+{% endblock %}

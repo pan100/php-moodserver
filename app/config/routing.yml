@@ -1,4 +1,4 @@
-pan100_mood_log:
+front:
     resource: "@Pan100MoodLogBundle/Resources/config/routing.yml"
     prefix:   /
 
