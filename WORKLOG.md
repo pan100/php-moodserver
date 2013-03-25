@@ -10,6 +10,8 @@ can call it a beta version 1.
 -set min and max range of graph from -50 to 50
 -added medicines to Accordion
 -added some icons to use in the report
+-symlinks to assets with command console assets:install web --symlink
+-cleaning of chartcontroller
 
 24.03.2012
 

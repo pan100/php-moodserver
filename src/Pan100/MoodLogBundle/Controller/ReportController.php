@@ -30,40 +30,6 @@ class ReportController extends Controller
 		
 	}
 
-	public function chartAction()
-    {
-
-        //get the data on the user
-        $days = $this->getUser()->getDays();
-        $moodLow = array();
-        $moodHigh = array();
-
-        foreach ($days as $day) {
-            $moodLow[] = array('y' => $day->getMoodLow() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
-            $moodHigh[] = array('y'=>$day->getMoodHigh() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
-        }
-        // Chart
-        $series = array(
-            array("name" => "Høy",    "data" => $moodHigh, "color" => "#FF0000"),
-                   array("name" => "Lav",    "data" => $moodLow)
-            );
-
-        $ob = new Highchart();
-        $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
-        //$ob->chart->type("arearange"); //TODO
-        $ob->title->text('Humørsvingninger');
-        $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
-        $ob->xAxis->type("datetime");
-        $ob->xAxis->dateTimeLabelFormats(array('day' => "%e. %b"));
-        $ob->xAxis->title(array('text' => "Dato"));
-        $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
-        $ob->series($series);
-
-        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
-            'chart' => $ob
-        ));
-    }
-
     public function lastWeekAction() {
         $days = $this->getUser()->getDays();
         $days = array_reverse($days->toArray());
@@ -160,4 +126,38 @@ class ReportController extends Controller
         $ob->series($series);
         return $ob;
     }
+
+        // public function chartAction()
+ //    {
+
+ //        //get the data on the user
+ //        $days = $this->getUser()->getDays();
+ //        $moodLow = array();
+ //        $moodHigh = array();
+
+ //        foreach ($days as $day) {
+ //            $moodLow[] = array('y' => $day->getMoodLow() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
+ //            $moodHigh[] = array('y'=>$day->getMoodHigh() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
+ //        }
+ //        // Chart
+ //        $series = array(
+ //            array("name" => "Høy",    "data" => $moodHigh, "color" => "#FF0000"),
+ //                   array("name" => "Lav",    "data" => $moodLow)
+ //            );
+
+ //        $ob = new Highchart();
+ //        $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
+ //        //$ob->chart->type("arearange"); //TODO
+ //        $ob->title->text('Humørsvingninger');
+ //        $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
+ //        $ob->xAxis->type("datetime");
+ //        $ob->xAxis->dateTimeLabelFormats(array('day' => "%e. %b"));
+ //        $ob->xAxis->title(array('text' => "Dato"));
+ //        $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
+ //        $ob->series($series);
+
+ //        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
+ //            'chart' => $ob
+ //        ));
+ //    }
 }
