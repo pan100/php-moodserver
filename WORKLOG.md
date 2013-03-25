@@ -9,6 +9,7 @@ can call it a beta version 1.
 -Worked with templates and renamed routes for the templates to reference easier
 -set min and max range of graph from -50 to 50
 -added medicines to Accordion
+-added some icons to use in the report
 
 24.03.2012
 

@@ -8,3 +8,4 @@ personel can gain access to reports on their patients. It includes an HTTP API c
 tracked data, and an Android app is designed to give the patients notifications when it is desired that the data should be 
 logged.
 
+- you may have to run console assets:install web --symlink to include the bundle's public assets
