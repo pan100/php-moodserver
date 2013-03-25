@@ -1,6 +1,6 @@
 {% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
 
-{% block title %}Rapport for (Pasientnavn her){% endblock %}
+{% block title %}Rapport for {{app.user.username}}{% endblock %}
 
 {% block scriptextras %}
 <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -8,34 +8,43 @@
 <script type="text/javascript">
     {{ chart(chart) }}
       $(function() {
-    $( "#accordion" ).accordion();
+    $( "#accordion" ).accordion({ heightStyle: "content" });
   });
 </script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
 {% endblock %}
 
-
 {% block body %}
+<h1>Rapport for {{app.user.username}}</h1>
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-
 <div id="accordion">
-	{% for day in days %}
+  {% for day in days %}
       <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>
-  <div>
-{% if day.triggers is not empty %}
-    <p><em>Denne dagen har registrerte triggere:</em></p>
-    <ul>
-        {% for trigger in day.triggers %}
-            <li>{{ trigger.triggertext }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-        <p><em>Logget data:</em></p>
-        <ul>
-            <li>Antall timer søvn natten før: {{ day.sleepHours }}</li>
-        </ul>
-        <p><em>Dagbok: </em>{{ day.diaryText }}</p>
+    <div>
+  {% if day.triggers is not empty %}
+      <p><em>Denne dagen har registrerte triggere:</em></p>
+      <ul>
+          {% for trigger in day.triggers %}
+              <li>{{ trigger.triggertext }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+          <p><em>Logget data:</em></p>
+          <ul>
+              <li>Antall timer søvn natten før: {{ day.sleepHours }}</li>
+              <li>Medisiner</li>
+              {% if day.medications is not empty %}
+                <ul>
+                  {% for medicine in day.medications %}
+                      <li>{{ medicine.name }} - {{ medicine.amountMg }} mg</li>
+                  {% endfor %}                  
+                </ul>
+                {% else %}
+                Ingen medisiner...
+              {% endif %}
+          </ul>
+          <p><em>Dagbok: </em>{{ day.diaryText }}</p>
+    </div>
+      {% endfor %}
   </div>
-    {% endfor %}
-</div>
 {% endblock %}
