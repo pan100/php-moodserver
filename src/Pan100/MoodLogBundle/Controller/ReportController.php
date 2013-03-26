@@ -148,8 +148,8 @@ class ReportController extends Controller
         $ob->xAxis->title(array('text' => "Dato"));
 
         $ob->yAxis(array(
-            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50")),
-            array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true))
+            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false),
+            array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true), "alignTicks" => false)
             ));
 
         // $ob->yAxis->max(50);
