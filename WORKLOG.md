@@ -4,6 +4,10 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a fully working prototype or perhaps we
 can call it a beta version 1.
 
+26.03.2012
+
+-inserted a marker into the graph. Will create tooltips later
+
 25.03.2012
 
 -Worked with templates and renamed routes for the templates to reference easier

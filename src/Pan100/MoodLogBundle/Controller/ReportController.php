@@ -4,6 +4,7 @@ namespace Pan100\MoodLogBundle\Controller;
 
 
 use Pan100\MoodLogBundle\Entity\User;
+use Pan100\MoodLogBundle\Entity\Trigger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 
@@ -70,46 +71,63 @@ class ReportController extends Controller
     }
 
     private function getObObjectFrom($numberOfDaysBack) {
+        //DEBUG LINE
+        $logger = $this->get('logger');
+
         $ob = new Highchart();
         $days = $this->getUser()->getDays();
 
         //create an array consisting of the number of days back
-        $daysLastWeek = array();
+        $daysToShow = array();
         for ($i=1; $i < $numberOfDaysBack ; $i++) { 
             $date = new \DateTime();
             $date->sub(new \DateInterval('P' . $i . 'D'));
-            $daysLastWeek[] = $date;
+            $daysToShow[] = $date;
         }
 
         //reverse the array so that the timeline is shown correctly
-        $daysLastWeek = array_reverse($daysLastWeek);
+        $daysToShow = array_reverse($daysToShow);
 
-        $mood = array();
+        $chartData = array();
+        $chartAverages = array();
         $weekdayLabels = array();
-        foreach ($daysLastWeek as $dayInWeek) {
+        foreach ($daysToShow as $day) {
             //figure out if this day has an entity, if not set null
             $hasDay = false;
             foreach ($days as $dayEntity) {
-                if($dayInWeek->format('Y-m-d') == $dayEntity->getDate()->format('Y-m-d')) {
+                //check if there is a day entity
+                if($day->format('Y-m-d') == $dayEntity->getDate()->format('Y-m-d')) {
                     $hasDay = true;
                     $dayEntityToProcess = $dayEntity;
                 }
             }
+            //if there is a day entity on the user for this day, add it to the chartData array
             if($hasDay) {
-                $mood[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
+                    $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
+                if(!$dayEntityToProcess->getTriggers()->isEmpty()) {
+                    $chartAverages[] = array(
+                        'y' => (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50,
+                        'marker' => array("symbol" => "url(/path/web/bundles/pan100moodlog/images/trigger.png)")
+                        );
+                }
+                else {
+                     $chartAverages[] = (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50;
+                }
             }
             else {
-                $mood[] = array(null, null);
+                $chartData[] = array(null, null);
+                $chartAverages[] = array(null, null);
             }
             //store the weekdays as a string for the x axis
-            $weekdayLabels[] = $dayInWeek->format('Y-m-d');
+            $weekdayLabels[] = $day->format('Y-m-d');
         }
         // Chart
         $series = array(
-            array("name" => "Humør",    "data" => $mood)
-            );
+            array("name" => "Humør",    "data" => $chartData, "zIndex" => "0", "type"=> "arearange"),
+            array("name" => "Snitt",    "data" => $chartAverages, "type" => "line"
+            ));
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
-        $ob->chart->type("arearange");
+        // $ob->chart->type("arearange");
 
 
         $ob->title->text('Humørsvingninger');
