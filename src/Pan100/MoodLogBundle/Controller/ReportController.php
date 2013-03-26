@@ -90,6 +90,7 @@ class ReportController extends Controller
 
         $chartData = array();
         $chartAverages = array();
+        $chartSleep = array();
         $weekdayLabels = array();
         foreach ($daysToShow as $day) {
             //figure out if this day has an entity, if not set null
@@ -113,6 +114,13 @@ class ReportController extends Controller
                 else {
                      $chartAverages[] = (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50;
                 }
+                if($dayEntityToProcess->getSleepHours() != null) {
+                    $chartSleep[] = $dayEntityToProcess->getSleepHours();
+                }
+                else {
+                    $chartSleep[] = null;
+                }
+
             }
             else {
                 $chartData[] = array(null, null);
@@ -123,9 +131,10 @@ class ReportController extends Controller
         }
         // Chart
         $series = array(
-            array("name" => "Humør",    "data" => $chartData, "zIndex" => "0", "type"=> "arearange"),
-            array("name" => "Snitt",    "data" => $chartAverages, "type" => "line"
-            ));
+            array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange"),
+            array("name" => "Snitt",    "data" => $chartAverages, "zIndex" => "2", "type" => "line"),
+            array("name" => "Søvn",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1)
+            );
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
         // $ob->chart->type("arearange");
 
@@ -137,9 +146,15 @@ class ReportController extends Controller
 
         $ob->xAxis->categories($weekdayLabels);
         $ob->xAxis->title(array('text' => "Dato"));
-        $ob->yAxis->max(50);
-        $ob->yAxis->min(-50);
-        $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
+
+        $ob->yAxis(array(
+            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50")),
+            array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true))
+            ));
+
+        // $ob->yAxis->max(50);
+        // $ob->yAxis->min(-50);
+        // $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
 
         $ob->series($series);
         return $ob;

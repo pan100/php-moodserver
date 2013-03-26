@@ -17,6 +17,7 @@
 {% block body %}
 <h1>Rapport for {{app.user.username}}</h1>
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+<h2>Dagsrapporter, nyeste først:</h2>
 <div id="accordion">
   {% for day in days %}
       <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>
