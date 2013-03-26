@@ -8,6 +8,7 @@ can call it a beta version 1.
 
 -inserted a marker into the graph. Will create tooltips later
 -sleep into bars in the chart. The sleep yAxis is not put on the opposite side, will fix later if there is time.
+-fixed bug where the first day was not shown in the graph
 
 25.03.2012
 

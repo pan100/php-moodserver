@@ -66,7 +66,7 @@ class ReportController extends Controller
         // . " and " . $interval->format('%R%a days') . " have passed");
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
-            'chart' => $this->getObObjectFrom($interval->d), 'days' => array_reverse($days->toArray())
+            'chart' => $this->getObObjectFrom($interval->d + 1), 'days' => $days->toArray()
         )); 
     }
 
