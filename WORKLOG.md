@@ -7,6 +7,7 @@ can call it a beta version 1.
 27.03.2012
 
 -Removed static path to trigger icon for the getObObjectFrom() method and used helper from assetic.
+-added mood levels to day reports
 
 26.03.2012
 
