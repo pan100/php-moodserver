@@ -7,6 +7,7 @@ use Pan100\MoodLogBundle\Entity\User;
 use Pan100\MoodLogBundle\Entity\Trigger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ob\HighchartsBundle\Highcharts\Highchart;
+use Zend\Json\Expr;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -92,6 +93,8 @@ class ReportController extends Controller
         $chartAverages = array();
         $chartSleep = array();
         $weekdayLabels = array();
+
+
         foreach ($daysToShow as $day) {
             //figure out if this day has an entity, if not set null
             $hasDay = false;
@@ -106,10 +109,14 @@ class ReportController extends Controller
             if($hasDay) {
                     $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
                 if(!$dayEntityToProcess->getTriggers()->isEmpty()) {
-                    //TODO the marker is now set to a static url. Must be changed for deploying
+                    $triggerTexts = array();
+                    foreach($dayEntityToProcess->getTriggers() as $trigger) {
+                        $triggerTexts[] = $trigger->getTriggertext();
+                    }
                     $chartAverages[] = array(
                         'y' => (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50,
-                        'marker' => array("symbol" => "url(". $this->container->get('templating.helper.assets')->getUrl('bundles/pan100moodlog/images/trigger.png') . ")")
+                        'marker' => array("symbol" => "url(". $this->container->get('templating.helper.assets')->getUrl('bundles/pan100moodlog/images/trigger.png') . ")"),
+                        'triggers' => $triggerTexts
                         );
                 }
                 else {
@@ -130,6 +137,8 @@ class ReportController extends Controller
             //store the weekdays as a string for the x axis
             $weekdayLabels[] = $day->format('Y-m-d');
         }
+
+
         // Chart
         $series = array(
             array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange"),
@@ -152,6 +161,25 @@ class ReportController extends Controller
             array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false),
             array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true), "alignTicks" => false)
             ));
+        $formatter = new Expr('
+            function() {
+                var tooltip = this.x + "<br/>" + this.y + "<br/>";
+                if(this.point.triggers) {
+                    tooltip += "triggere: ";
+                    for(var i =0; i <= this.point.triggers.length -1; i++) {
+                        tooltip +=  this.point.triggers[i];
+                        if(i != this.point.triggers.length -1) {
+                            tooltip += ", "
+                        }
+                    }
+                    
+                }
+
+                return tooltip;
+            }
+            ');
+        $ob->tooltip->formatter($formatter);
+
 
         // $ob->yAxis->max(50);
         // $ob->yAxis->min(-50);
