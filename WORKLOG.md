@@ -1,8 +1,12 @@
 Worklog for MoodLogBundle Project
 ==================================
 
-The log file is organized by dates and not versions. The result will be a fully working prototype or perhaps we
+The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
+
+27.03.2012
+
+-Removed static path to trigger icon for the getObObjectFrom() method and used helper from assetic.
 
 26.03.2012
 

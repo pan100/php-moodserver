@@ -106,9 +106,10 @@ class ReportController extends Controller
             if($hasDay) {
                     $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
                 if(!$dayEntityToProcess->getTriggers()->isEmpty()) {
+                    //TODO the marker is now set to a static url. Must be changed for deploying
                     $chartAverages[] = array(
                         'y' => (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50,
-                        'marker' => array("symbol" => "url(/path/web/bundles/pan100moodlog/images/trigger.png)")
+                        'marker' => array("symbol" => "url(". $this->container->get('templating.helper.assets')->getUrl('bundles/pan100moodlog/images/trigger.png') . ")")
                         );
                 }
                 else {
