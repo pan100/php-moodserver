@@ -15,5 +15,5 @@ _report_lastWeek:
     defaults: { _controller: Pan100MoodLogBundle:Report:lastWeek, _locale: nb}
 
 _report_fromFirst:
-    pattern: /report/fromfirst/
-    defaults: { _controller: Pan100MoodLogBundle:Report:fromFirst, _locale: nb}
+    pattern: /report/fromfirst/{username}
+    defaults: { _controller: Pan100MoodLogBundle:Report:fromFirst, username:self, _locale: nb}

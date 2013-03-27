@@ -8,7 +8,8 @@ can call it a beta version 1.
 
 -Removed static path to trigger icon for the getObObjectFrom() method and used helper from assetic.
 -added mood levels to day reports
--add triggers to graph labels and plotted them in the graph
+-added triggers to graph labels and plotted them in the graph
+-added access control for reports based on who the user has access to, but must be tested more
 
 26.03.2012
 

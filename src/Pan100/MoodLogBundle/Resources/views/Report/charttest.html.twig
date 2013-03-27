@@ -1,6 +1,6 @@
 {% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
 
-{% block title %}Rapport for {{app.user.username}}{% endblock %}
+{% block title %}Rapport for {{user.username}}{% endblock %}
 
 {% block scriptextras %}
 <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>Rapport for {{app.user.username}}</h1>
+<h1>Rapport for {{user.username}}</h1>
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 <h2>Dagsrapporter, eldste først:</h2>
 <div id="accordion">

@@ -21,7 +21,7 @@ class User extends BaseUser
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="hasAccessToMe")
      **/
-    protected $hasAccessTo;
+    protected $hasAccessTo = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="hasAccessTo")
@@ -30,7 +30,7 @@ class User extends BaseUser
      *      inverseJoinColumns={@ORM\JoinColumn(name="accessor_id", referencedColumnName="id")}
      *      )
      **/
-    protected $hasAccessToMe; 
+    protected $hasAccessToMe = null; 
 
     // ...
     /**
@@ -42,6 +42,8 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+        $this->hasAccessTo = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->hasAccessToMe = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

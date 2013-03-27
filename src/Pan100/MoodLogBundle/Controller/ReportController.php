@@ -8,6 +8,7 @@ use Pan100\MoodLogBundle\Entity\Trigger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Zend\Json\Expr;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,15 +34,29 @@ class ReportController extends Controller
 	}
 
     public function lastWeekAction() {
+        //TODO update with username - this function will show the logged in user no matter if it is a doctor or not
         $days = $this->getUser()->getDays();
         $days = array_reverse($days->toArray());
         $days = array_slice($days, 0,7);
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
-            'chart' => $this->getObObjectFrom(7), 'days' => $days
+            'chart' => $this->getObObjectFrom(7, $this->getUser()), 'days' => $days
         ));        
     }
 
-    public function fromFirstAction() {
+    public function fromFirstAction($username) {
+        $userManager = $this->container->get('fos_user.user_manager');        
+        if($username == "self") {
+            $user = $this->getUser();
+        }
+        else {
+            //chech if the user has access or show 403 forbidden
+            if(!$this->loggedInUserHasAccessTo($userManager->findUserByUsername($username))) {
+                throw new HttpException(403, 'Du har ikke tilgang til denne brukerens data');
+            }
+
+            $user =$userManager->findUserByUsername($username);
+        }
+
 
         $em = $this->getDoctrine()->getManager();
 
@@ -49,7 +64,7 @@ class ReportController extends Controller
         $logger = $this->get('logger');
 
         //get the data on the user
-        $days = $this->getUser()->getDays();
+        $days = $user->getDays();
 
         //get the first day and find out how many days have passed
         $query = $em->createQuery('SELECT d FROM Pan100MoodLogBundle:Day d ORDER BY d.date ASC');
@@ -67,16 +82,16 @@ class ReportController extends Controller
         // . " and " . $interval->format('%R%a days') . " have passed");
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
-            'chart' => $this->getObObjectFrom($interval->d + 1), 'days' => $days->toArray()
+            'chart' => $this->getObObjectFrom($interval->d + 1, $user), 'days' => $days->toArray(), 'user' => $user
         )); 
     }
 
-    private function getObObjectFrom($numberOfDaysBack) {
+    private function getObObjectFrom($numberOfDaysBack, $user) {
         //DEBUG LINE
         $logger = $this->get('logger');
 
         $ob = new Highchart();
-        $days = $this->getUser()->getDays();
+        $days = $user->getDays();
 
         //create an array consisting of the number of days back
         $daysToShow = array();
@@ -151,7 +166,7 @@ class ReportController extends Controller
 
         $ob->title->text('Humørsvingninger');
 
-        $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
+        $ob->subtitle->text('For ' . $user->getUsername());
 
 
         $ob->xAxis->categories($weekdayLabels);
@@ -180,13 +195,16 @@ class ReportController extends Controller
             ');
         $ob->tooltip->formatter($formatter);
 
-
-        // $ob->yAxis->max(50);
-        // $ob->yAxis->min(-50);
-        // $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
-
         $ob->series($series);
         return $ob;
+    }
+    
+    private function loggedInUserHasAccessTo($user) {
+        $loggedInUser = $this->getUser();
+        if($loggedInUser->getHasAccessTo()->contains($user)) {
+            return true;
+        }
+        return false;
     }
 
         // public function chartAction()
