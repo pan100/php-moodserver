@@ -9,3 +9,5 @@ tracked data, and an Android app is designed to give the patients notifications 
 logged.
 
 - you may have to run console assets:install web --symlink to include the bundle's public assets
+- do not call your user "self", this is reserved in the routes and will show you your reports and they 
+cannot be shared with other because of this.

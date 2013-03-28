@@ -1,0 +1,29 @@
+{% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
+
+{% block title %}Administratorpanel{% endblock %}
+
+{% block scriptextras %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script type="text/javascript">
+      $(function() {
+    $( "#accordion" ).accordion({ heightStyle: "content" });
+  });
+</script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
+{% endblock %}
+
+{% block body %}
+<h1>Administratorpanel</h1>
+<div id="accordion">
+	<h3>Lage ny bruker</h3>
+	<div>
+		<p>skjema her</p>
+	</div>
+
+	<h3>Knytte sammen pasienter og behandlere</h3>
+	<div>
+		<p>skjema her</p>
+	</div>
+</div>
+{% endblock %}

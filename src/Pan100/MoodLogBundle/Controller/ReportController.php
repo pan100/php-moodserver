@@ -49,7 +49,7 @@ class ReportController extends Controller
             $user = $this->getUser();
         }
         else {
-            //chech if the user has access or show 403 forbidden
+            //check if the user has access or show 403 forbidden
             if(!$this->loggedInUserHasAccessTo($userManager->findUserByUsername($username))) {
                 throw new HttpException(403, 'Du har ikke tilgang til denne brukerens data');
             }

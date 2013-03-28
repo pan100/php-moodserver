@@ -2,6 +2,10 @@ _front:
     pattern: /
     defaults: { _controller: Pan100MoodLogBundle:Default:index, _locale: nb}
 
+_admin:
+    pattern: /admin/
+    defaults: { _controller: Pan100MoodLogBundle:Admin:index, _locale: nb }
+
 _report:
     pattern: /report
     defaults: { _controller: Pan100MoodLogBundle:Report:index, _locale: nb}
