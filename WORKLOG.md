@@ -8,6 +8,7 @@ can call it a beta version 1.
 
 -started working on an admin panel to add users and connect patients and medical staff
 
+
 27.03.2012
 
 -Removed static path to trigger icon for the getObObjectFrom() method and used helper from assetic.

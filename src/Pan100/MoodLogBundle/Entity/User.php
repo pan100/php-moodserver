@@ -32,11 +32,10 @@ class User extends BaseUser
      **/
     protected $hasAccessToMe = null; 
 
-    // ...
     /**
      * @ORM\OneToMany(targetEntity="Day", mappedBy="user_id")
+     * @ORM\OrderBy({"date" = "DESC"})     
      **/    
-
     protected $days;
 
     public function __construct()
