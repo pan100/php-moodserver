@@ -1,0 +1,18 @@
+{% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
+
+{% block title %}Meny{% endblock %}
+{% block scriptextras %}
+{% endblock %}
+{% block stylesheets %}       
+	{% stylesheets '@Pan100MoodLogBundle/Resources/public/css/*' filter='cssrewrite' %}
+	    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+	{% if is_granted('ROLE_MEDIC')%}
+    {% include 'Pan100MoodLogBundle:Front:medic_body.html.twig' %}
+    {% else %}
+    {% include 'Pan100MoodLogBundle:Front:patient_body.html.twig' %}
+    {% endif %}
+{% endblock %}

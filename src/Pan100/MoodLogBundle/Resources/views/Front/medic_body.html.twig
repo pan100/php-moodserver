@@ -1,0 +1,10 @@
+<h1>Meny for behandler {{app.user.username}}</h1>
+
+<nav class="menu">
+	<h2>Oversikt over dine pasienter:</h2>
+	<ul>
+		{% for patient in patients %}
+		<ul><a href="{{ path('_report_fromFirst', {'username': patient.username}) }}">{{ patient.username }}</a></ul>
+		{% endfor %}
+	</ul>	
+</nav>

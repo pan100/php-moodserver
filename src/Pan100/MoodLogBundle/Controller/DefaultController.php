@@ -7,10 +7,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
 	public function indexAction() {
-
-		if($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+		//should it be "remembered" not "fully"?
+		if($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			//render the logged in view(s)
-			$response = $this->render('Pan100MoodLogBundle:Default:index.html.twig');
+
+			if($this->getUser()->hasRole('ROLE_MEDIC')) {
+				//get the patients associated with this medic user
+				$patients = $this->getUser()->getHasAccessTo();
+				$response = $this->render('Pan100MoodLogBundle:Front:index.html.twig', array('patients' => $patients));
+			}
+			else {
+				$response = $this->render('Pan100MoodLogBundle:Front:index.html.twig');
+			}
 		}
 		else {
 			//redirect to the login controller

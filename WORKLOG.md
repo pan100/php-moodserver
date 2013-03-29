@@ -4,10 +4,15 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
 
+29.03.2012
+
+- Sorting is done when fetching days based on user (User entity getDays has a sortBy annotation)
+- medics can now log in and see a list of their patients
+
 28.03.2012
 
--started working on an admin panel to add users and connect patients and medical staff
-
+-started working on an admin panel to add users and connect patients and medical staff but stopped this work due to poor
+planning. Will take it up later.
 
 27.03.2012
 
