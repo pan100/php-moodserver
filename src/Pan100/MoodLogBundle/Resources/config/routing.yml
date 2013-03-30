@@ -21,3 +21,23 @@ _report_lastWeek:
 _report_fromFirst:
     pattern: /report/fromfirst/{username}
     defaults: { _controller: Pan100MoodLogBundle:Report:fromFirst, username:self, _locale: nb}
+
+_day:
+    pattern:     /day/{date}
+    defaults: { _controller: Pan100MoodLogBundle:Day:index, date:today }
+    requirements:
+        _format:  html|json
+        _method:  GET
+
+_day_post:
+    pattern:     /day/{date}
+    defaults: { _controller: Pan100MoodLogBundle:Day:post, date:today }
+    requirements: 
+        _format:  html|json
+        _method:  POST|GET
+_day_delete:
+    pattern:     /day/{date}
+    defaults: { _controller: Pan100MoodLogBundle:Day:delete, date:today }
+    requirements: 
+        _format:  html|json
+        _method:  DELETE
