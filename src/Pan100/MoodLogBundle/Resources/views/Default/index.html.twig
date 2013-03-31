@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Stemningsdagboken online - {% block title %}{% endblock %}</title>
-        {% javascripts '@Pan100MoodLogBundle/Resources/public/js/*' %}
+        {% javascripts '@Pan100MoodLogBundle/Resources/public/js/*' '@Pan100MoodLogBundle/Resources/public/js/jquery.ui.datepicker-nb.js' '@Pan100MoodLogBundle/Resources/public/js/jquery.autoGrowInput.js' '@Pan100MoodLogBundle/Resources/public/js/jquery.tagedit.js'%}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% block stylesheets %}{% endblock %}

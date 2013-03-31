@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-	<form action="{{ path('_day_post') }}" method="post" {{ form_enctype(form) }}>
+	<form action="{{ path('_day_form_post') }}" method="post" {{ form_enctype(form) }}>
 		{{ form_widget(form) }}
 	    <input type="submit" />
 	</form>
