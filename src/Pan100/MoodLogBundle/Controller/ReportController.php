@@ -85,7 +85,7 @@ class ReportController extends Controller
             'chart' => $this->getObObjectFrom($interval->d + 1, $user), 'days' => $days->toArray(), 'user' => $user
         )); 
     }
-
+    //TODO rewrite this function to take advantage of User->getDaysWithNulls()
     private function getObObjectFrom($numberOfDaysBack, $user) {
         //DEBUG LINE
         $logger = $this->get('logger');
@@ -157,7 +157,7 @@ class ReportController extends Controller
         // Chart
         $series = array(
             array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange"),
-            array("name" => "Snitt",    "data" => $chartAverages, "zIndex" => "2", "type" => "line"),
+            array("name" => "Snitt med triggere",    "data" => $chartAverages, "zIndex" => "2", "type" => "line"),
             array("name" => "Søvn",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1)
             );
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
