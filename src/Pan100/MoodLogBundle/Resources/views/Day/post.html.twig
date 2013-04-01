@@ -1,0 +1,19 @@
+
+
+{% extends 'Pan100MoodLogBundle:Default:index.html.twig' %}
+
+{% block title %}Meny{% endblock %}
+{% block scriptextras %}
+{% endblock %}
+{% block stylesheets %}       
+	{% stylesheets '@Pan100MoodLogBundle/Resources/public/css/*' filter='cssrewrite' %}
+	    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+	<form action="{{ path('_day_form_post') }}" method="post" {{ form_enctype(form) }}>
+		{{ form_widget(form) }}
+	    <input type="submit" />
+	</form>
+{% endblock %}
