@@ -337,4 +337,16 @@ class Day
     {
         return $this->user_id;
     }
+
+    static function daySorter($dayEntity1, $dayEntity2) {
+        $interval = $dayEntity1->getDate()->diff($dayEntity2->getDate());
+        //if the dayEntity1 is newer than dayEntity2, it is greater and we return 1. For now dont care to return 0 if identical.
+        if($interval->invert == 1) {
+            return +1;
+        }
+        else if ($interval->invert == 0) {
+            return 0;
+        }
+        else return -1;
+    }
 }

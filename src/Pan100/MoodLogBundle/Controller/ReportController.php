@@ -57,19 +57,14 @@ class ReportController extends Controller
             $user =$userManager->findUserByUsername($username);
         }
 
-
-        $em = $this->getDoctrine()->getManager();
-
         //DEBUG LINE
         $logger = $this->get('logger');
 
-        //get the data on the user
-        $days = $user->getDays();
+        //get the data on the user with days that has no data
+        $days = $user->getDaysWithNulls();
 
-        //get the first day and find out how many days have passed
-        $query = $em->createQuery('SELECT d FROM Pan100MoodLogBundle:Day d ORDER BY d.date ASC');
-        $firstEntry = $query->setMaxResults(1);
-        $firstEntry = $query->getSingleResult();
+        //get the first day (the last in the array) and find out how many days have passed
+        $firstEntry = $days->last();
         $logger->info("first date is " . $firstEntry->getDate()->format('Y-m-d'));
 
         //return new Response("first date is " . $firstEntry->getDate()->format('Y-m-d'));
@@ -80,8 +75,13 @@ class ReportController extends Controller
 
         //return new Response("first date is " . $firstEntry->getDate()->format('Y-m-d')
         // . " and " . $interval->format('%R%a days') . " have passed");
+        //fill in day gaps with null
+        //create an array consisting of the number of days back
+
+
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
+            //todo - make a new array where you put null values in the days array where there are no data
             'chart' => $this->getObObjectFrom($interval->d + 1, $user), 'days' => $days->toArray(), 'user' => $user
         )); 
     }
@@ -91,8 +91,8 @@ class ReportController extends Controller
         $logger = $this->get('logger');
 
         $ob = new Highchart();
+        //TODO here I can refactor since User Entity class now has function getDaysWithNulls()
         $days = $user->getDays();
-
         //create an array consisting of the number of days back
         $daysToShow = array();
         for ($i=1; $i < $numberOfDaysBack ; $i++) { 

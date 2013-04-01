@@ -19,7 +19,7 @@
 				});
 				$( "#moodMin" ).val($( "#slider-range" ).slider( "values", 0 ));
 				$( "#moodMax" ).val($( "#slider-range" ).slider( "values", 1 ));
-				$( "#datepicker" ).datepicker();	
+				$( "#datepicker" ).datepicker({ minDate: -5, maxDate: 0 });	
 
 				var myDate = new Date();
 				var today =("0" + myDate.getDate()).slice(-2) + '.' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '.' +

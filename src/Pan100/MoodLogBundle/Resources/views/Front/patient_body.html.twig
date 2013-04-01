@@ -1,5 +1,7 @@
-<h1>velkommen {{app.user.username}}</h1>
-
+<h1>Velkommen {{app.user.username}}</h1>
+<a href="{{path('_report_fromFirst')}}">Gå til min rapport</a>
+<h2>Eller legg inn data under</h2>
+<p>PS du kan redigere tidligere innlagte data under din rapport</p>
 <form id="postdata" method="post">
 
 	<p>
@@ -17,7 +19,7 @@
  
 	<div id="sleepslider" class="slider"></div>
 
-	<p>Medisiner:</p>
+	<p><strong>Medisiner:</strong></p>
 	<button id="add_med_field">Legg til linje</button>
     <div id="medicine_container">
 	    <div class="medicine_fields">
@@ -34,7 +36,7 @@
 		<input type="text" name="trigger[]" value="" class="trigger"/>
 	</p>
 
-	<label for="datepicker">Velg hvilken dato du fører for, standard dette døgnet:</label>
+	<label for="datepicker">Velg hvilken dato du fører for under. Du kan gå tilbake i tid maks 5 dager. Standard er dette døgnet:</label>
 	<input type="text" id="datepicker"></input>
 
 	<input type="submit" value="Lagre eller oppdater">

@@ -191,12 +191,50 @@ class User extends BaseUser
     }
 
     /**
-     * Get days - give integer $numberOfDays if you want to specify the number of days.
+     *
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
     public function getDays()
     {
         return $this->days;
+    }
+
+    /**
+     * get days with null values for gaps
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+
+    public function getDaysWithNulls()
+    {
+        $days = $this->getDays()->toArray();
+        //get the first day and find out how many days have passed
+        usort($days, array("\Pan100\MoodLogBundle\Entity\Day", "daySorter"));
+        $firstEntry = $days[0];
+        $interval = $firstEntry->getDate()->diff(new \DateTime());
+
+        $numberOfDaysBack = $interval->d;
+        //create an array consisting of the number of days back
+        $daysToShow = array();
+        for ($i=1; $i < $numberOfDaysBack ; $i++) { 
+            $date = new \DateTime();
+            $date->sub(new \DateInterval('P' . $i . 'D'));
+            $daysToShow[] = $date;
+        }
+        $daysToReturn = array();
+        foreach ($daysToShow as $day) {
+            //figure out if this day has an entity, if not set an empty Day object
+            $dayEntityToProcess = new \Pan100\MoodLogBundle\Entity\Day();
+            $dayEntityToProcess->setDate($day);
+            foreach ($days as $dayEntity) {
+                //check if there is a day entity
+                if($day->format('Y-m-d') == $dayEntity->getDate()->format('Y-m-d')) {
+                    $dayEntityToProcess = $dayEntity;
+                } 
+            }
+            $daysToReturn[] = $dayEntityToProcess;
+        }
+        //return a collection
+        return new \Doctrine\Common\Collections\ArrayCollection($daysToReturn);
     }
 }
