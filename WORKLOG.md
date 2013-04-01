@@ -4,6 +4,15 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
 
+01.04.2012
+
+- The report now shows empty days as well. Before only the graph did
+- The report had a severe bug. I am only testing with one user. The first day was determined based on the set of all
+day entities in the collection of days irrespective of what user had logged it. So it would have shown reports based on
+the first date of the first user who started logging!
+- Major refactoring was done and more is to be done. Namely, the User entity now has a function called "getDaysWithNulls()"
+which returns all the days logged but with empty days where nothing is logged.
+
 29.03.2012
 
 - Sorting is done when fetching days based on user (User entity getDays has a sortBy annotation)

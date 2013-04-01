@@ -1,0 +1,5 @@
+Pan100\MoodLogBundle\Entity\Day:
+    properties:
+        date:
+            - Date: ~
+        
