@@ -21,33 +21,37 @@
 <div id="accordion">
   {% for day in days %}
       <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>
-    <div>
-  {% if day.triggers is not empty %}
-      <p><img src="{{ asset('bundles/pan100moodlog/images/trigger.png') }}" alt="Trigger icon" /> <em>Denne dagen har registrerte triggere:</em></p>
-      <ul>
-          {% for trigger in day.triggers %}
+      {% if day is not null%}
+      <div>
+        {% if day.triggers is not empty %}
+          <p><img src="{{ asset('bundles/pan100moodlog/images/trigger.png') }}" alt="Trigger icon" /> <em>Denne dagen har registrerte triggere:</em></p>
+          <ul>
+            {% for trigger in day.triggers %}
               <li>{{ trigger.triggertext }}</li>
           {% endfor %}
-      </ul>
-  {% endif %}
-          <p><em>Logget data:</em></p>
-          <ul>
-              <li>Høyeste humør: {% if day.moodHigh is not null %} {{ day.moodHigh-50 }} {% else %} ikke logget {% endif %}</li>
-              <li>Høyeste humør: {% if day.moodLow is not null %} {{ day.moodLow-50 }} {% else %} ikke logget {% endif %}</li>
-              <li>Antall timer søvn natten før: {% if day.sleepHours is not null %} {{ day.sleepHours }} {% else %} ikke logget {% endif %}</li>
-              <li><img src="{{ asset('bundles/pan100moodlog/images/medicine.png') }}" alt="Medicine icon" /> Medisiner</li>
-              {% if day.medications is not empty %}
-                <ul>
-                  {% for medicine in day.medications %}
-                      <li>{{ medicine.name }} - {{ medicine.amountMg }} mg</li>
-                  {% endfor %}                  
-                </ul>
-                {% else %}
-                Ingen medisiner...
-              {% endif %}
           </ul>
-          <p><em>Dagbok: </em>{{ day.diaryText }}</p>
-    </div>
+        {% endif %}
+        <p><em>Logget data:</em></p>
+        <ul>
+            <li>Høyeste humør: {% if day.moodHigh is not null %} {{ day.moodHigh-50 }} {% else %} ikke logget {% endif %}</li>
+            <li>Høyeste humør: {% if day.moodLow is not null %} {{ day.moodLow-50 }} {% else %} ikke logget {% endif %}</li>
+            <li>Antall timer søvn natten før: {% if day.sleepHours is not null %} {{ day.sleepHours }} {% else %} ikke logget {% endif %}</li>
+            <li><img src="{{ asset('bundles/pan100moodlog/images/medicine.png') }}" alt="Medicine icon" /> Medisiner</li>
+            {% if day.medications is not empty %}
+              <ul>
+                {% for medicine in day.medications %}
+                    <li>{{ medicine.name }} - {{ medicine.amountMg }} mg</li>
+                {% endfor %}                  
+              </ul>
+              {% else %}
+              Ingen medisiner...
+            {% endif %}
+        </ul>
+        <p><em>Dagbok: </em>{{ day.diaryText }}</p>
+      </div>
+      {% else %}
+      <div>ingen data</div>
+    {% endif %}
       {% endfor %}
   </div>
 {% endblock %}

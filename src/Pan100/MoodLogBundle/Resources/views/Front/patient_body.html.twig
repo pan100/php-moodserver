@@ -1,8 +1,43 @@
-<h1>Meny for pasient {{app.user.username}}</h1>
+<h1>Velkommen {{app.user.username}}</h1>
+<a href="{{path('_report_fromFirst')}}">Gå til min rapport</a>
+<h2>Eller legg inn data under</h2>
+<p>PS du kan redigere tidligere innlagte data under din rapport</p>
+<form id="postdata" method="post">
 
-<nav class="menu">
-	<ul>
-		<li>Legge inn data</li>
-		<li>Se og redigere data</li>
-	</ul>	
-</nav>
+	<p>
+		<label for="moodMin">Stemningsleie i løpet av dagen fra -50 til 50 (0 er normal):</label>
+		<input type="text" name="moodMin" id="moodMin" size="2" style="border:0; color:#f6931f; font-weight:bold; margin:3px;" />
+		til:
+		<input type="text" name="moodMax" id="moodMax" size="2"  style="border:0; color:#f6931f; font-weight:bold; margin:3px;" />
+	</p>
+	<div id="slider-range" class="slider"></div>
+
+	<p>
+ 		<label for="sleepHours">Antall timer søvn:</label>
+  		<input type="text" id="sleepHours" style="border: 0; color: #f6931f; font-weight: bold;" size="8" />
+	</p>
+ 
+	<div id="sleepslider" class="slider"></div>
+
+	<p><strong>Medisiner:</strong></p>
+	<button id="add_med_field">Legg til linje</button>
+    <div id="medicine_container">
+	    <div class="medicine_fields">
+	        <input type="text" name="medicine_name[]" placeholder="Medisinnavn"/>
+	        <input type="number" name="medicine_mg[]" />mg
+	    </div>
+    </div>
+    <p>
+	    <label for="diary">Dagbok:</label>
+	    <textarea name="diary" placeholder="skriv litt om dagen hvis du vil..." rows="5" cols="30"></textarea>
+	</p>
+	<p>
+		<label for="triggers">Triggere (skill med komma):</label>
+		<input type="text" name="trigger[]" value="" class="trigger"/>
+	</p>
+
+	<label for="datepicker">Velg hvilken dato du fører for under. Du kan gå tilbake i tid maks 5 dager. Standard er dette døgnet:</label>
+	<input type="text" id="datepicker"></input>
+
+	<input type="submit" value="Lagre eller oppdater">
+</form>

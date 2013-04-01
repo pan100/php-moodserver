@@ -2,6 +2,69 @@
 
 {% block title %}Meny{% endblock %}
 {% block scriptextras %}
+	{% if is_granted('ROLE_PATIENT')%}
+		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+		<script>
+		$(function() {
+			$.datepicker.setDefaults( $.datepicker.regional[ "nb" ] );
+  			$( "#slider-range" ).slider({
+				range: true,
+				min: -50,
+				max: 50,
+				values: [ -5, 5 ],
+				slide: function( event, ui ) {
+					$( "#moodMin" ).val( ui.values[ 0 ]);
+					$( "#moodMax" ).val( ui.values[ 1 ]);
+					}
+				});
+				$( "#moodMin" ).val($( "#slider-range" ).slider( "values", 0 ));
+				$( "#moodMax" ).val($( "#slider-range" ).slider( "values", 1 ));
+				$( "#datepicker" ).datepicker({ minDate: -5, maxDate: 0 });	
+
+				var myDate = new Date();
+				var today =("0" + myDate.getDate()).slice(-2) + '.' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '.' +
+       			myDate.getFullYear();
+				$("#datepicker").val(today);
+
+				 $( "#sleepslider" ).slider({
+			      value:8,
+			      min: 0,
+			      max: 24,
+			      slide: function( event, ui ) {
+			        $( "#sleepHours" ).val( ui.value + " timer" );
+			      }
+			    });
+    			$( "#sleepHours" ).val($( "#sleepslider" ).slider( "value" ) + " timer");
+
+    			$("#add_med_field").click(function(e) {
+    				if($("#medicine_container div.medicine_fields").eq(-1).find("input").val() != '') {
+					    $("#medicine_container").append($("#medicine_container div.medicine_fields:eq(0)").clone(true));
+					    $("#medicine_container div.medicine_fields").eq(-1).find("input").val('');    					
+    				}
+				    e.preventDefault();
+				});
+				$( 'input.trigger' ).tagedit();
+			});
+			
+		</script>
+		<style type="text/css">
+			#slider-range {
+				max-width: 500px;
+				margin:auto;
+				margin-bottom: 25px;
+			}
+			.slider {
+				max-width: 500px;
+				margin:auto;				
+			}
+			label {
+				display: block;
+			}
+			ul {
+				margin:auto !important;
+			}
+		</style>
+	{% endif %}
 {% endblock %}
 {% block stylesheets %}       
 	{% stylesheets '@Pan100MoodLogBundle/Resources/public/css/*' filter='cssrewrite' %}
