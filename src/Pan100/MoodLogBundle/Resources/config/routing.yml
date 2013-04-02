@@ -24,14 +24,14 @@ _report_fromFirst:
 
 _day_form_post:
     pattern:     /post/day/
-    defaults: { _controller: Pan100MoodLogBundle:Day:post, date:today }
+    defaults: { _controller: Pan100MoodLogBundle:Day:post }
     requirements: 
         _format:  html
         _method:  POST|GET
 
 _json_day_post:
     pattern:     /json/day
-    defaults: { _controller: Pan100MoodLogBundle:Day:index }
+    defaults: { _controller: Pan100MoodLogBundle:Day:json_post }
     requirements:
         _format:  json
         _method:  POST

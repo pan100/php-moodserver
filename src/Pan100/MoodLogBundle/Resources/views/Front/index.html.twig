@@ -5,6 +5,7 @@
 	{% if is_granted('ROLE_PATIENT')%}
 		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
 		<script>
+		//todo refactoring - move into separate file
 		$(function() {
 			$.datepicker.setDefaults( $.datepicker.regional[ "nb" ] );
   			$( "#slider-range" ).slider({
@@ -31,10 +32,10 @@
 			      min: 0,
 			      max: 24,
 			      slide: function( event, ui ) {
-			        $( "#sleepHours" ).val( ui.value + " timer" );
+			        $( "#sleepHours" ).val( ui.value );
 			      }
 			    });
-    			$( "#sleepHours" ).val($( "#sleepslider" ).slider( "value" ) + " timer");
+    			$( "#sleepHours" ).val($( "#sleepslider" ).slider( "value" ));
 
     			$("#add_med_field").click(function(e) {
     				if($("#medicine_container div.medicine_fields").eq(-1).find("input").val() != '') {
@@ -44,6 +45,17 @@
 				    e.preventDefault();
 				});
 				$( 'input.trigger' ).tagedit();
+
+				$("#postdata").submit(function(event) {
+					event.preventDefault();
+					console.log("in submit");
+					console.log("submitted serialized: " + $("#postdata").serialize());
+					var posting = $.post("{{ path('_json_day_post')}}", $("#postdata").serialize(), 'json');
+
+					posting.done(function( data ) {
+    					console.log(data);
+  					});
+				});
 			});
 			
 		</script>
@@ -76,6 +88,6 @@
 	{% if is_granted('ROLE_MEDIC')%}
     {% include 'Pan100MoodLogBundle:Front:medic_body.html.twig' %}
     {% else %}
-    {% include 'Pan100MoodLogBundle:Front:patient_body.html.twig' %}
+    {% include 'Pan100MoodLogBundle:Front:day_form.html.twig' %}
     {% endif %}
 {% endblock %}

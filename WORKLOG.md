@@ -4,6 +4,11 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
 
+02.04.2012
+
+- Started writing a controller method for taking post data in json and echoing it back in json. Seems to work, I
+will continue with implementing the functionality by validating the input and creating or updating a Day entity.
+
 01.04.2012
 
 - The report now shows empty days as well. Before only the graph did
