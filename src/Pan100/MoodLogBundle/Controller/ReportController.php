@@ -95,7 +95,7 @@ class ReportController extends Controller
         $days = $user->getDays();
         //create an array consisting of the number of days back
         $daysToShow = array();
-        for ($i=1; $i < $numberOfDaysBack ; $i++) { 
+        for ($i=0; $i < $numberOfDaysBack ; $i++) { 
             $date = new \DateTime();
             $date->sub(new \DateInterval('P' . $i . 'D'));
             $daysToShow[] = $date;

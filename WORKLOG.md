@@ -4,6 +4,11 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
 
+04.04.2012
+
+I was sick last night and still feel a bit groggy, but I have done some minor changes today:
+- The graph also includes today.
+
 02.04.2012
 
 - Started writing a controller method for taking post data in json and echoing it back in json. Seems to work, I

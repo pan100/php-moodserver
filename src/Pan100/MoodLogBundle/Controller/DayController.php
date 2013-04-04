@@ -10,19 +10,8 @@ use Pan100\MoodLogBundle\Entity\Day;
 class DayController extends Controller
 {
 	public function json_postAction(Request $request) {
-		//testing. Just return the inputted json		
-		$data = array();
-		$data['moodMin'] = $request->request->get('moodMin');
-		$data['moodMax'] = $request->request->get('moodMax');
-		$data['sleepHours'] = $request->request->get('sleepHours');
-		$data['diaryText'] = $request->request->get('diaryText');
-		$triggers = array();
-		foreach ($request->request->get('trigger') as $trigger) {
-			$triggers[] = $trigger;
-		}
-		$data['triggers'] = $triggers;
 
-		$response = new Response(json_encode($data));  
+		$response = new Response($request->getContent());  
     	return $response;
 	}
 
