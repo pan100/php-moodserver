@@ -7,11 +7,34 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Pan100\MoodLogBundle\Entity\Day;
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+
+
 class DayController extends Controller
 {
 	public function json_postAction(Request $request) {
+        //DEBUG LINE
+        $logger = $this->get('logger');
 
-		$response = new Response($request->getContent());  
+		$day = new Day();
+		//get the date from the form, create a new datetime object and set the date
+		$dateFromReq = $request->request->get('date');
+        $logger->info("date is given as " . $dateFromReq);
+        $format = 'd.m.Y';
+        $date = \DateTime::createFromFormat($format, $dateFromReq);
+        $logger->info("converted to DateTime and timestamp is " . $date->getTimestamp());
+		$day->setDate($date);
+
+		$day->setMoodLow($request->request->get('moodMin'));
+		$day->setMoodHigh($request->request->get('moodMax'));
+
+		$encoders = array(new JsonEncoder());
+		$normalizers = array(new GetSetMethodNormalizer());
+		$serializer = new Serializer($normalizers, $encoders);
+
+		$response = new Response($serializer->serialize($day, 'json'));  
     	return $response;
 	}
 
