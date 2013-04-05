@@ -4,6 +4,10 @@ Worklog for MoodLogBundle Project
 The log file is organized by dates and not versions. The result will be a  fully working prototype or perhaps we
 can call it a beta version 1.
 
+05.04.2012
+
+-the form that is set up to get data from the user now has a controller that accepts its post and just returns the day object as json. Will validate and persist later
+
 04.04.2012
 
 I was sick last night and still feel a bit groggy, but I have done some minor changes today:

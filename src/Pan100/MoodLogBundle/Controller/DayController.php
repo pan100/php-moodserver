@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Pan100\MoodLogBundle\Entity\Day;
+use Pan100\MoodLogBundle\Entity\Medication;
+use Pan100\MoodLogBundle\Entity\Trigger;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -27,8 +29,34 @@ class DayController extends Controller
         $logger->info("converted to DateTime and timestamp is " . $date->getTimestamp());
 		$day->setDate($date);
 
+		$day->setSleepHours($request->request->get('sleepHours'));
 		$day->setMoodLow($request->request->get('moodMin'));
 		$day->setMoodHigh($request->request->get('moodMax'));
+
+
+		//add medications if any
+		if($request->request->has('medicine_name') &&  $request->request->has('medicine_mg')) {
+			$mednames = $request->request->get('medicine_name');
+			$medmgs = $request->request->get('medicine_mg');
+			foreach ($mednames as $medkey => $medname) {
+				$medObj = new Medication();
+				$medObj->setName($medname);
+				$medObj->setAmountMg($medmgs[$medkey]);
+				$day->addMedication($medObj);
+			}
+		}
+
+		//add triggers
+		foreach ($request->request->get('trigger')as $triggertext) {
+			$triggerObj = new Trigger();
+			$triggerObj->setTriggertext($triggertext);
+			$day->addTrigger($triggerObj);
+		}
+		//add diary text
+		$day->setDiaryText($request->request->get('diaryText'));
+		//validate
+
+		//persist
 
 		$encoders = array(new JsonEncoder());
 		$normalizers = array(new GetSetMethodNormalizer());
