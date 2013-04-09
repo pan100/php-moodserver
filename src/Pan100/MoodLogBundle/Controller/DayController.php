@@ -17,6 +17,8 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 class DayController extends Controller
 {
 	public function json_postAction(Request $request) {
+//TODO if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
+
         //DEBUG LINE
         $logger = $this->get('logger');
 
@@ -47,26 +49,35 @@ class DayController extends Controller
 		}
 
 		//add triggers
-		foreach ($request->request->get('trigger')as $triggertext) {
-			$triggerObj = new Trigger();
-			$triggerObj->setTriggertext($triggertext);
-			$day->addTrigger($triggerObj);
+		if($request->request->get('trigger') != "") {
+			foreach ($request->request->get('trigger')as $triggertext) {
+				$triggerObj = new Trigger();
+				$triggerObj->setTriggertext($triggertext);
+				$day->addTrigger($triggerObj);
+			}			
 		}
+
 		//add diary text
 		$day->setDiaryText($request->request->get('diaryText'));
 		//validate
+		$validator = $this->get('validator');
+		$errors = $validator->validate($day);
+    	if (count($errors) > 0) {
+        	return new Response(print_r($errors, true), 400);
+    	} else {
+			//TODO - attempt persisting or return new response with errors.
 
-		//persist
+			$encoders = array(new JsonEncoder());
+			$normalizers = array(new GetSetMethodNormalizer());
+			$serializer = new Serializer($normalizers, $encoders);
 
-		$encoders = array(new JsonEncoder());
-		$normalizers = array(new GetSetMethodNormalizer());
-		$serializer = new Serializer($normalizers, $encoders);
-
-		$response = new Response($serializer->serialize($day, 'json'));  
-    	return $response;
+			$response = new Response($serializer->serialize($day, 'json'));  
+	    	return $response;
+    	}
 	}
 
 
+	//FOR NOW THIS METHOD (and its route) IS NOT IN USE - considering removing
 	public function postAction(Request $request) {
 		if($this->getUser()->hasRole('ROLE_PATIENT')) {
 			//render the form
