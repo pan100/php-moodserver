@@ -32,8 +32,8 @@ class DayController extends Controller
 		$day->setDate($date);
 
 		$day->setSleepHours($request->request->get('sleepHours'));
-		$day->setMoodLow($request->request->get('moodMin'));
-		$day->setMoodHigh($request->request->get('moodMax'));
+		$day->setMoodLow($request->request->get('moodMin') + 50);
+		$day->setMoodHigh($request->request->get('moodMax') + 50);
 
 
 		//add medications if any

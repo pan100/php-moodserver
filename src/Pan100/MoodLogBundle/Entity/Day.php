@@ -3,6 +3,7 @@
 namespace Pan100\MoodLogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * @ORM\Entity
@@ -348,5 +349,11 @@ class Day
             return 0;
         }
         else return -1;
+    }
+
+    public function isHighLowCorrect(ExecutionContext $context) {
+        if($this->moodHigh<$this->moodLow) {
+            $context->addViolationAtSubPath('moodlow', "Laveste humør må være lavere enn høyeste", array(), null);
+        }
     }
 }

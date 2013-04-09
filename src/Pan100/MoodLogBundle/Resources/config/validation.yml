@@ -9,6 +9,6 @@ Pan100\MoodLogBundle\Entity\Day:
                 max: 100
                 minMessage: Humør høy må være mellom 0 og 100
                 maxMessage: Humør høy må være mellom 0 og 100     
-        constraints:
-            - Callback:
-                methods:   [isHighLowCorrect]
+    constraints:
+        - Callback:
+            methods:   [isHighLowCorrect]
