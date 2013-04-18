@@ -23,6 +23,7 @@ class DayController extends Controller
 		}
 		else if($request->request->get('username')) {
 			//check the username and password. If not correct give 403 forbidden
+			
 		}
         //DEBUG LINE
         $logger = $this->get('logger');

@@ -156,9 +156,9 @@ class ReportController extends Controller
 
         // Chart
         $series = array(
-            array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange"),
-            array("name" => "Snitt med triggere",    "data" => $chartAverages, "zIndex" => "2", "type" => "line"),
-            array("name" => "Søvn",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1)
+            array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange", 'color' => '#F02E47'),
+            array("name" => "Snitt med triggere",    "data" => $chartAverages, "zIndex" => "2", "type" => "line" , 'color' => '#000000'),
+            array("name" => "Søvn",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1 , 'color' => '#55F26A')
             );
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
         // $ob->chart->type("arearange");

@@ -11,6 +11,11 @@
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% block loggedInBar %}
+            {% if is_granted('ROLE_USER')%}
+            <nav><a href="{{ path('fos_user_security_logout') }}">trykk her for å logge ut</a></nav>
+            {% endif %}
+        {% endblock %}
         {% block body %}
         {% endblock %}
         {% block javascripts %}{% endblock %}
