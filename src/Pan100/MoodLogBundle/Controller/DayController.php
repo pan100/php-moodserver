@@ -18,45 +18,51 @@ class DayController extends Controller
 {
 	public function json_postAction(Request $request) {
 //TODO if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
-
+		if($this->getUser()->hasRole('ROLE_PATIENT')) {
+			$user = $this->getUser();
+		}
+		else if($request->request->get('username')) {
+			//check the username and password. If not correct give 403 forbidden
+		}
         //DEBUG LINE
         $logger = $this->get('logger');
 
-		$day = new Day();
+        $em = $this->getDoctrine()->getManager();
+
 		//get the date from the form, create a new datetime object and set the date
 		$dateFromReq = $request->request->get('date');
         $logger->info("date is given as " . $dateFromReq);
         $format = 'd.m.Y';
         $date = \DateTime::createFromFormat($format, $dateFromReq);
         $logger->info("converted to DateTime and timestamp is " . $date->getTimestamp());
+       	//TODO if the day with the given date exists, do not add a new day but update the old one
+		$repository = $this->getDoctrine()->getRepository('Pan100MoodLogBundle:Day');
+		$day = $repository->findOneBy(array('date' => $date, 'user_id' => $user));
+		if($day == null) {
+			$day = new Day();	
+		}
 		$day->setDate($date);
-
 		$day->setSleepHours($request->request->get('sleepHours'));
 		$day->setMoodLow($request->request->get('moodMin') + 50);
 		$day->setMoodHigh($request->request->get('moodMax') + 50);
-
-
 		//add medications if any
-		if($request->request->has('medicine_name') &&  $request->request->has('medicine_mg')) {
+		if($request->request->get('medicine_name') != "" &&  $request->request->get('medicine_mg') != "") {
+			
 			$mednames = $request->request->get('medicine_name');
 			$medmgs = $request->request->get('medicine_mg');
 			foreach ($mednames as $medkey => $medname) {
-				$medObj = new Medication();
-				$medObj->setName($medname);
-				$medObj->setAmountMg($medmgs[$medkey]);
-				$day->addMedication($medObj);
+				$day->addMedication($this->handleMedicine($medname, $medmgs[$medkey]));
 			}
 		}
 
 		//add triggers
 		if($request->request->get('trigger') != "") {
 			foreach ($request->request->get('trigger')as $triggertext) {
-				$triggerObj = new Trigger();
-				$triggerObj->setTriggertext($triggertext);
-				$day->addTrigger($triggerObj);
+				//todo check if one exists first
+				$day->addTrigger($this->handleTrigger($triggertext));
 			}			
 		}
-
+		$day->setUserId($user);
 		//add diary text
 		$day->setDiaryText($request->request->get('diaryText'));
 		//validate
@@ -67,12 +73,17 @@ class DayController extends Controller
     	} else {
 			//TODO - attempt persisting or return new response with errors.
 
-			$encoders = array(new JsonEncoder());
+			 $encoders = array(new JsonEncoder());
 			$normalizers = array(new GetSetMethodNormalizer());
 			$serializer = new Serializer($normalizers, $encoders);
+			
+		    $em->persist($day);
+		    $em->flush();
+			// create a JSON-response with a 200 status code
+			$response = new Response(200);
+			$response->headers->set('Content-Type', 'application/json');
 
-			$response = new Response($serializer->serialize($day, 'json'));  
-	    	return $response;
+			return $response;
     	}
 	}
 
@@ -94,5 +105,32 @@ class DayController extends Controller
 			//handle submissions, validate the data and create a new date object or update an existing one			
 		}
 		throw new \Exception('You are not a patient and cannot access this URI');
+	}
+
+	private function handleMedicine($name, $mg) {
+		$em = $this->getDoctrine()->getManager();
+		//todo check if one exists first
+		$repository = $this->getDoctrine()->getRepository('Pan100MoodLogBundle:Medication');
+		$medObj = $repository->findOneBy(array('name' => $name, 'amount_mg' => $mg));
+		if($medObj == null) {
+			$medObj = new Medication();
+			$medObj->setName($name);
+			$medObj->setAmountMg($mg);
+			//TODO validation
+			$em->persist($medObj);			
+		}
+		return $medObj;
+	}
+	private function handleTrigger($triggertext) {
+		$em = $this->getDoctrine()->getManager();
+		$repository = $this->getDoctrine()->getRepository('Pan100MoodLogBundle:Trigger');
+		$triggerObj = $repository->findOneBy(array('triggertext' => $triggertext));
+		if($triggerObj == null) {
+			$triggerObj = new Trigger();
+			$triggerObj->setTriggertext($triggertext);
+			$em->persist($triggerObj);
+		}
+				//todo validation
+		return $triggerObj;
 	}
 }
