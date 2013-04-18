@@ -5,7 +5,7 @@ The log file is organized by dates and not versions. The result will be a  fully
 can call it a beta version 1.
 
 18.04.2012
-
+- Fixed medication logging, did not work properly
 - The form now takes input from form and persists it. Much more testing must be done here, and I have not made the posting through JSON with validation.
 
 09.04.2012

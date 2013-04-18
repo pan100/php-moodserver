@@ -38,21 +38,26 @@ class DayController extends Controller
        	//TODO if the day with the given date exists, do not add a new day but update the old one
 		$repository = $this->getDoctrine()->getRepository('Pan100MoodLogBundle:Day');
 		$day = $repository->findOneBy(array('date' => $date, 'user_id' => $user));
+		$dayExists =true;
 		if($day == null) {
-			$day = new Day();	
+			$day = new Day();
+			$dayExists = false;	
 		}
 		$day->setDate($date);
 		$day->setSleepHours($request->request->get('sleepHours'));
 		$day->setMoodLow($request->request->get('moodMin') + 50);
 		$day->setMoodHigh($request->request->get('moodMax') + 50);
 		//add medications if any
-		if($request->request->get('medicine_name') != "" &&  $request->request->get('medicine_mg') != "") {
 			
-			$mednames = $request->request->get('medicine_name');
-			$medmgs = $request->request->get('medicine_mg');
+		$mednames = $request->request->get('medicine_name');
+		$medmgs = $request->request->get('medicine_mg');
+		if(!empty($mednames)) {
+			$logger->info("mednames is not empty");
 			foreach ($mednames as $medkey => $medname) {
-				$day->addMedication($this->handleMedicine($medname, $medmgs[$medkey]));
-			}
+				if($medname != "") {
+					$day->addMedication($this->handleMedicine($medname, $medmgs[$medkey]));					
+				}
+			}				
 		}
 
 		//add triggers
@@ -76,8 +81,9 @@ class DayController extends Controller
 			 $encoders = array(new JsonEncoder());
 			$normalizers = array(new GetSetMethodNormalizer());
 			$serializer = new Serializer($normalizers, $encoders);
-			
-		    $em->persist($day);
+			if(!$dayExists) {
+				$em->persist($day);
+			}
 		    $em->flush();
 			// create a JSON-response with a 200 status code
 			$response = new Response(200);
