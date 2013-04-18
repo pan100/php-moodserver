@@ -248,7 +248,10 @@ class Day
      */
     public function addTrigger(\Pan100\MoodLogBundle\Entity\Trigger $triggers)
     {
-        $this->triggers[] = $triggers;
+        //if it already has the trigger, do not add it
+        if(!$this->getTriggers()->contains($triggers)) {
+            $this->triggers[] = $triggers;
+        }
     
         return $this;
     }
@@ -280,9 +283,10 @@ class Day
      * @return Day
      */
     public function addMedication(\Pan100\MoodLogBundle\Entity\Medication $medications)
-    {
-        $this->medications[] = $medications;
-    
+    {   
+        if(!$this->getMedications()->contains($medications)) {
+            $this->medications[] = $medications;
+        }
         return $this;
     }
 
