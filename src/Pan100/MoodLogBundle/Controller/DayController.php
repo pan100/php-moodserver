@@ -21,9 +21,23 @@ class DayController extends Controller
 		if($this->getUser()->hasRole('ROLE_PATIENT')) {
 			$user = $this->getUser();
 		}
-		else if($request->request->get('username')) {
+		else if($username = $request->request->get('username')) {
 			//check the username and password. If not correct give 403 forbidden
-			
+			$userManager = $container->get('fos_user.user_manager');
+			$user = $findUserByUsername($username);
+
+			$notAuthenticatedMessage = "feil brukernavn eller passord";
+			if(!$user) {
+				return new Response($notAuthenticatedMessage, 403);
+			}
+			$password = $request->request->get('password');
+			$encoder_service = $this->get('security.encoder_factory');
+			$encoder = $encoder_service->getEncoder($user);
+			$encoded_pass = $encoder->encodePassword($password, $user->getSalt());
+
+			if($encoded_pass != $user->getPassword) {
+				return new Response($notAuthenticatedMessage, 403);
+			}
 		}
         //DEBUG LINE
         $logger = $this->get('logger');
