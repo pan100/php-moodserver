@@ -14,38 +14,67 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 
+/*
+**
+**
+** Tests with curl: 
+** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord"}' localhost/path/web/app_dev.php/json/day -v
+** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"06.05.2013"}' localhost/path/web/app_dev.php/json/day -v
+*/
+
 class DayController extends Controller
 {
 	public function json_postAction(Request $request) {
-//TODO if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
-		if($this->getUser()->hasRole('ROLE_PATIENT')) {
-			$user = $this->getUser();
+		//DEBUG LINE
+        $logger = $this->get('logger');
+		
+            $params = array();
+    		$content = $this->get("request")->getContent();
+    		if (!empty($content))
+    		{
+        		$params = json_decode($content, true); // 2nd param to get as array
+    		}
+    		else return new Response("Feil i forespørsel", 400);
+
+		// if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
+		$securityContext = $this->container->get('security.context');
+		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ){
+    		// authenticated REMEMBERED, FULLY will imply REMEMBERED (NON anonymous)
+    		if($this->getUser()->hasRole('ROLE_PATIENT')) {
+				$user = $this->getUser();
+			}
 		}
-		else if($username = $request->request->get('username')) {
+		
+		else  {
+			$username = $params["username"];
+
 			//check the username and password. If not correct give 403 forbidden
-			$userManager = $container->get('fos_user.user_manager');
-			$user = $findUserByUsername($username);
+			$logger->info("username:" . $username);
+			$userManager = $this->container->get('fos_user.user_manager');
+			$user = $userManager->findUserByUsername($username);
 
 			$notAuthenticatedMessage = "feil brukernavn eller passord";
 			if(!$user) {
 				return new Response($notAuthenticatedMessage, 403);
 			}
-			$password = $request->request->get('password');
+			$password = $params["password"];
 			$encoder_service = $this->get('security.encoder_factory');
 			$encoder = $encoder_service->getEncoder($user);
 			$encoded_pass = $encoder->encodePassword($password, $user->getSalt());
-
-			if($encoded_pass != $user->getPassword) {
+			$logger->info("encoded pass:" . $encoded_pass);
+			if($encoded_pass != $user->getPassword()) {
 				return new Response($notAuthenticatedMessage, 403);
 			}
 		}
-        //DEBUG LINE
-        $logger = $this->get('logger');
 
         $em = $this->getDoctrine()->getManager();
 
+        if(!array_key_exists("date", $params)) {
+        	return new Response("ingen dato gitt", 400);
+        }
+
 		//get the date from the form, create a new datetime object and set the date
-		$dateFromReq = $request->request->get('date');
+		$dateFromReq = $params["date"];
         $logger->info("date is given as " . $dateFromReq);
         $format = 'd.m.Y';
         $date = \DateTime::createFromFormat($format, $dateFromReq);
@@ -59,9 +88,15 @@ class DayController extends Controller
 			$dayExists = false;	
 		}
 		$day->setDate($date);
-		$day->setSleepHours($request->request->get('sleepHours'));
-		$day->setMoodLow($request->request->get('moodMin') + 50);
-		$day->setMoodHigh($request->request->get('moodMax') + 50);
+		if(array_key_exists("sleepHours", $params)) {
+			$day->setSleepHours($params["sleepHours"]);
+		}
+		if(array_key_exists("moodMin", $params)) {
+			$day->setMoodLow($params["moodMin"] + 50);
+		}
+		if(array_key_exists("moodMax", $params)) {
+			$day->setMoodLow($params["moodMax"] + 50);
+		}
 		//add medications if any
 			
 		$mednames = $request->request->get('medicine_name');
