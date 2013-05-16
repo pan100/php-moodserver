@@ -15,3 +15,6 @@ After this you might want to test it and to create a patient with 14 days of ran
 - you may have to run console assets:install web --symlink to include the bundle's public assets
 - do not call your user "self", this is reserved in the routes and will show you your reports and they 
 cannot be shared with other because of this.
+
+NOTE FOR INSTALLATION - NORWEGIAN LANGUAGE FILES FOR FUS USER BUNDLE IN THE "EXTRA SEE README" FOLDER.
+These files are put in the "resources" folder of UserBundle located in vendor/ somewhere.
