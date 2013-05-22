@@ -122,7 +122,7 @@ class ReportController extends Controller
             }
             //if there is a day entity on the user for this day, add it to the chartData array
             if($hasDay) {
-                if(($dayEntityToProcess->getMoodLow() != null) && ($dayEntityToProcess->getMoodHigh() != null)) {
+                if(($dayEntityToProcess->getMoodLow() !== null) && ($dayEntityToProcess->getMoodHigh() !== null)) {
                     $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
                 }
                 else $chartData[] = array (null, null);
@@ -139,7 +139,7 @@ class ReportController extends Controller
                         );
                 }
                 else {
-                    if(($dayEntityToProcess->getMoodLow() != null) && ($dayEntityToProcess->getMoodHigh() != null)) {
+                    if(($dayEntityToProcess->getMoodLow() !== null) && ($dayEntityToProcess->getMoodHigh() !== null)) {
                         $chartAverages[] = (($dayEntityToProcess->getMoodLow() + $dayEntityToProcess->getMoodHigh()) /2) -50;
                     }
                     else $chartAverages[] = null;

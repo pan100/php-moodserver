@@ -28,13 +28,16 @@ class DayController extends Controller
 		//DEBUG LINE
         $logger = $this->get('logger');
 		
-            $params = array();
-    		$content = $this->get("request")->getContent();
-    		if (!empty($content))
-    		{
-        		$params = json_decode($content, true); // 2nd param to get as array
+        $params = array();
+		$content = $this->get("request")->getContent();
+		if (!empty($content))
+		{
+    		$params = json_decode($content, true); // 2nd param to get as array
+    		if($params == null) {
+    			return new Response("Feil i forespørsel", 400);
     		}
-    		else return new Response("Feil i forespørsel", 400);
+		}
+		else return new Response("Feil i forespørsel", 400);
 
 		// if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
 		$securityContext = $this->container->get('security.context');
@@ -98,24 +101,26 @@ class DayController extends Controller
 			$day->setMoodLow($params["moodMax"] + 50);
 		}
 		//add medications if any
-			
-		$mednames = $request->request->get('medicine_name');
-		$medmgs = $request->request->get('medicine_mg');
-		if(!empty($mednames)) {
-			$logger->info("mednames is not empty");
-			foreach ($mednames as $medkey => $medname) {
-				if($medname != "") {
-					$day->addMedication($this->handleMedicine($medname, $medmgs[$medkey]));					
-				}
-			}				
+		if(array_key_exists("medicine_name", $params)) {
+			$mednames = $params["medicine_name"];
+			$medmgs = $params["medicine_mg"];
+			if(!empty($mednames)) {
+				$logger->info("mednames is not empty");
+				foreach ($mednames as $medkey => $medname) {
+					if($medname != "") {
+						$day->addMedication($this->handleMedicine($medname, $medmgs[$medkey]));					
+					}
+				}				
+			}
 		}
-
-		//add triggers
-		if($request->request->get('trigger') != "") {
-			foreach ($request->request->get('trigger')as $triggertext) {
-				//todo check if one exists first
-				$day->addTrigger($this->handleTrigger($triggertext));
-			}			
+		if(array_key_exists("trigger", $params)) {
+			//add triggers
+			if($request->request->get('trigger') != "") {
+				foreach ($request->request->get('trigger')as $triggertext) {
+					//todo check if one exists first
+					$day->addTrigger($this->handleTrigger($triggertext));
+				}			
+			}
 		}
 		$day->setUserId($user);
 		//add diary text

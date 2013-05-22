@@ -49,8 +49,8 @@
 				$("#postdata").submit(function(event) {
 					event.preventDefault();
 					console.log("in submit");
-					console.log("submitted serialized: " + $("#postdata").serialize());
-					var posting = $.post("{{ path('_json_day_post')}}", $("#postdata").serialize(), 'json');
+					console.log("submitted serialized: " + JSON.stringify($("#postdata").serialize()));
+					var posting = $.post("{{ path('_json_day_post')}}", JSON.stringify($("#postdata")), 'json');
 
 					posting.done(function( data ) {
     					console.log(data);
