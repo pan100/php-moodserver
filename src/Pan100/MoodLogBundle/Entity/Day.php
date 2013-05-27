@@ -356,7 +356,7 @@ class Day
     }
 
     public function isHighLowCorrect(ExecutionContext $context) {
-        if($this->moodHigh<$this->moodLow) {
+        if($this->moodHigh < $this->moodLow) {
             $context->addViolationAtSubPath('moodlow', "Laveste humør må være lavere enn høyeste", array(), null);
         }
     }

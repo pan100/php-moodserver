@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 ** Tests with curl: 
 ** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord"}' localhost/path/web/app_dev.php/json/day -v
 ** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"06.05.2013"}' localhost/path/web/app_dev.php/json/day -v
+** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"22.05.2013", "sleepHours": "8"}' localhost/path/web/app_dev.php/json/day -v
+** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"22.05.2013", "moodMin" : "10", "moodMax": "20"}' localhost/path/web/app_dev.php/json/day -v
+** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"27.05.2013", "moodMin" : "10", "moodMax": "20", "trigger" : ["1","2"]}' localhost/path/web/app_dev.php/json/day -v
 */
 
 class DayController extends Controller
@@ -35,7 +38,7 @@ class DayController extends Controller
     		$params = json_decode($content, true); // 2nd param to get as array
     		if($params == null) {
     			return new Response("Feil i forespørsel", 400);
-    		}
+    		}	
 		}
 		else return new Response("Feil i forespørsel", 400);
 
@@ -96,9 +99,10 @@ class DayController extends Controller
 		}
 		if(array_key_exists("moodMin", $params)) {
 			$day->setMoodLow($params["moodMin"] + 50);
+			$logger->info("set the mood low");	
 		}
 		if(array_key_exists("moodMax", $params)) {
-			$day->setMoodLow($params["moodMax"] + 50);
+			$day->setMoodHigh($params["moodMax"] + 50);
 		}
 		//add medications if any
 		if(array_key_exists("medicine_name", $params)) {
@@ -115,8 +119,8 @@ class DayController extends Controller
 		}
 		if(array_key_exists("trigger", $params)) {
 			//add triggers
-			if($request->request->get('trigger') != "") {
-				foreach ($request->request->get('trigger')as $triggertext) {
+			if($params["trigger"] !== "") {
+				foreach ($params["trigger"] as $triggertext) {
 					//todo check if one exists first
 					$day->addTrigger($this->handleTrigger($triggertext));
 				}			
@@ -128,11 +132,14 @@ class DayController extends Controller
 		//validate
 		$validator = $this->get('validator');
 		$errors = $validator->validate($day);
-    	if (count($errors) > 0) {
-        	return new Response(print_r($errors, true), 400);
-    	} else {
+    	if(count($errors) > 0) {
+    		foreach ($errors as $error) {
+    			$logger->err($error->getMessage());
+    		}
+        	return new Response("Feil, sjekk logg", 400);
+    	} 
+    	else {
 			//TODO - attempt persisting or return new response with errors.
-
 			 $encoders = array(new JsonEncoder());
 			$normalizers = array(new GetSetMethodNormalizer());
 			$serializer = new Serializer($normalizers, $encoders);
@@ -186,7 +193,7 @@ class DayController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$repository = $this->getDoctrine()->getRepository('Pan100MoodLogBundle:Trigger');
 		$triggerObj = $repository->findOneBy(array('triggertext' => $triggertext));
-		if($triggerObj == null) {
+		if($triggerObj === null) {
 			$triggerObj = new Trigger();
 			$triggerObj->setTriggertext($triggertext);
 			$em->persist($triggerObj);
