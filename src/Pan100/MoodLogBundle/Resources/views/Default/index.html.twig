@@ -6,11 +6,12 @@
         {% javascripts '@Pan100MoodLogBundle/Resources/public/js/*' '@Pan100MoodLogBundle/Resources/public/js/jquery.ui.datepicker-nb.js' '@Pan100MoodLogBundle/Resources/public/js/jquery.autoGrowInput.js' '@Pan100MoodLogBundle/Resources/public/js/jquery.tagedit.js'%}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %} <link href="{{ asset('bundles/pan100moodlog/css/bootstrap-responsive.min.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('bundles/pan100moodlog/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" />{% endblock %}
         {% block scriptextras %}{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+    <body><div class="container">
         {% block loggedInBar %}
             {% if is_granted('ROLE_USER')%}
             <nav><a href="{{ path('fos_user_security_logout') }}">trykk her for å logge ut</a></nav>
@@ -19,5 +20,6 @@
         {% block body %}
         {% endblock %}
         {% block javascripts %}{% endblock %}
+    </div>
     </body>
 </html>

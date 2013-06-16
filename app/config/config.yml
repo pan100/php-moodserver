@@ -27,8 +27,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:
-        -Pan100MoodLogBundle
+    bundles: [ Pan100MoodLogBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

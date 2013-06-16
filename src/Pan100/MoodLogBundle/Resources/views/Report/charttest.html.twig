@@ -34,7 +34,7 @@
         <p><em>Logget data:</em></p>
         <ul>
             <li>Høyeste humør: {% if day.moodHigh is not null %} {{ day.moodHigh-50 }} {% else %} ikke logget {% endif %}</li>
-            <li>Høyeste humør: {% if day.moodLow is not null %} {{ day.moodLow-50 }} {% else %} ikke logget {% endif %}</li>
+            <li>Laveste humør: {% if day.moodLow is not null %} {{ day.moodLow-50 }} {% else %} ikke logget {% endif %}</li>
             <li>Antall timer søvn natten før: {% if day.sleepHours is not null %} {{ day.sleepHours }} {% else %} ikke logget {% endif %}</li>
             <li><img src="{{ asset('bundles/pan100moodlog/images/medicine.png') }}" alt="Medicine icon" /> Medisiner</li>
             {% if day.medications is not empty %}

@@ -17,7 +17,7 @@ class DefaultController extends Controller
 				$response = $this->render('Pan100MoodLogBundle:Front:index.html.twig', array('patients' => $patients));
 			}
 			else {
-				$response = $this->render('Pan100MoodLogBundle:Front:index.html.twig');
+				$response = $this->redirect($this->generateUrl('_report_fromFirst'));
 			}
 		}
 		else {
