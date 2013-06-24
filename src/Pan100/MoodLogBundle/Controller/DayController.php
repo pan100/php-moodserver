@@ -38,11 +38,14 @@ class DayController extends Controller
 		{
     		$params = json_decode($content, true); // 2nd param to get as array
     		if($params == null) {
+    			$logger->err("params was empty");
     			return new Response("Feil i forespørsel", 400);
     		}	
 		}
-		else return new Response("Feil i forespørsel", 400);
-
+		else {
+			$logger->err("request had no content");
+			return new Response("Feil i forespørsel", 400);
+		}
 		// if the user has the role_patient, do the saving, else check if the request contains values username and password. Attempt to authenticate the given username and password. If not authentic, give 403 response.
 		$securityContext = $this->container->get('security.context');
 		if( $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') ){
@@ -77,6 +80,7 @@ class DayController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if(!array_key_exists("date", $params)) {
+        	$logger->err("no date was given");
         	return new Response("ingen dato gitt", 400);
         }
 
