@@ -128,7 +128,10 @@ class DayController extends Controller
 		}
 		$day->setUserId($user);
 		//add diary text
-		$day->setDiaryText($request->request->get('diaryText'));
+		if(array_key_exists("diaryText", $params)) {
+			$day->setDiaryText($request->request->get('diaryText'));
+		}
+		
 		//validate
 		$validator = $this->get('validator');
 		$errors = $validator->validate($day);
