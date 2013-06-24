@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 ** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"22.05.2013", "sleepHours": "8"}' localhost/path/web/app_dev.php/json/day -v
 ** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"22.05.2013", "moodMin" : "10", "moodMax": "20"}' localhost/path/web/app_dev.php/json/day -v
 ** curl -X POST -H "Contcation/json" -d '{"username":"ola_nordmann","password":"passord", "date":"27.05.2013", "moodMin" : "10", "moodMax": "20", "trigger" : ["1","2"]}' localhost/path/web/app_dev.php/json/day -v
+**  curl -X POST -H "Contcation/json" -d '{"moodLow":"0","username":"ola_nordmann","triggers":["test","tilbake"],"diaryText":"og jeg har fått dette nummeret","date":"24.06.2013","password":"passord","moodHigh":"100"}' localhost/path/web/app_dev.php/json/day -v
 */
 
 class DayController extends Controller
@@ -129,7 +130,7 @@ class DayController extends Controller
 		$day->setUserId($user);
 		//add diary text
 		if(array_key_exists("diaryText", $params)) {
-			$day->setDiaryText($request->request->get('diaryText'));
+			$day->setDiaryText($params["diaryText"]);
 		}
 		
 		//validate
