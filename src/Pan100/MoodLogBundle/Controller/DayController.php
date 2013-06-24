@@ -38,7 +38,7 @@ class DayController extends Controller
 		{
     		$params = json_decode($content, true, 3); // 2nd param to get as array
     		if($params == null) {
-    			$logger->err("params was empty");
+    			$logger->err("params was empty - " . \Doctrine\Common\Util\Debug::dump($params));
     			return new Response("Feil i forespørsel", 400);
     		}	
 		}
