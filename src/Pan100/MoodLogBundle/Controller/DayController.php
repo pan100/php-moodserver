@@ -99,11 +99,11 @@ class DayController extends Controller
 			$day->setSleepHours($params["sleepHours"]);
 		}
 		if(array_key_exists("moodMin", $params)) {
-			$day->setMoodLow($params["moodMin"] + 50);
+			$day->setMoodLow($params["moodMin"]);
 			$logger->info("set the mood low");	
 		}
 		if(array_key_exists("moodMax", $params)) {
-			$day->setMoodHigh($params["moodMax"] + 50);
+			$day->setMoodHigh($params["moodMax"]);
 		}
 		//add medications if any
 		if(array_key_exists("medicine_name", $params)) {
