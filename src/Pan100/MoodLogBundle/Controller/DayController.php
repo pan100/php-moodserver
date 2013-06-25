@@ -127,13 +127,16 @@ class DayController extends Controller
 			if($params["trigger"] !== "") {
 				foreach ($params["trigger"] as $triggertext) {
 					//todo check if one exists first
-					$day->addTrigger($this->handleTrigger($triggertext));
+					if($triggertext != "") {
+						$day->addTrigger($this->handleTrigger($triggertext));
+					}	
 				}			
 			}
 		}
 		$day->setUserId($user);
 		//add diary text
 		if(array_key_exists("diaryText", $params)) {
+			$logger->info("triggerstring sent away:" . $params["diaryText"]);
 			$day->setDiaryText($params["diaryText"]);
 		}
 		
