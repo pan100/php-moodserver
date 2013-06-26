@@ -13,6 +13,8 @@ require_once __DIR__.'/AppKernel.php';
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Pan100\MoodLogBundle\Command\CreateMockDataCommand;
+use Pan100\MoodLogBundle\Command\CreateUserCommand;
+use Pan100\MoodLogBundle\Command\GrantAccessCommand;
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
@@ -21,4 +23,6 @@ $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('-
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
 $application->add(new CreateMockDataCommand);
+$application->add(new CreateUserCommand);
+$application->add(new GrantAccessCommand);
 $application->run($input);

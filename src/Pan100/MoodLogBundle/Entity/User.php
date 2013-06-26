@@ -208,6 +208,9 @@ class User extends BaseUser
     public function getDaysWithNulls()
     {
         $days = $this->getDays()->toArray();
+        if(empty($days)) {
+            return $days;
+        }
         //get the first day and find out how many days have passed
         usort($days, array("\Pan100\MoodLogBundle\Entity\Day", "daySorter"));
         $firstEntry = $days[0];

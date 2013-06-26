@@ -62,7 +62,10 @@ class ReportController extends Controller
 
         //get the data on the user with days that has no data
         $days = $user->getDaysWithNulls();
-
+        if ($days == null) {
+            //render a different template
+            return $this->render('Pan100MoodLogBundle:Report:nodata.html.twig');
+        }
         //get the first day (the last in the array) and find out how many days have passed
         $firstEntry = $days->last();
         $logger->info("first date is " . $firstEntry->getDate()->format('Y-m-d'));
