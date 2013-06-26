@@ -215,7 +215,9 @@ class User extends BaseUser
         usort($days, array("\Pan100\MoodLogBundle\Entity\Day", "daySorter"));
         $firstEntry = $days[0];
         $interval = $firstEntry->getDate()->diff(new \DateTime());
-
+        if($interval->d == 0) {
+            return new \Doctrine\Common\Collections\ArrayCollection($days);
+        }
         $numberOfDaysBack = $interval->d;
         //create an array consisting of the number of days back
         $daysToShow = array();
