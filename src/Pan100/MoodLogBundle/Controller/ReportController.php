@@ -85,13 +85,15 @@ class ReportController extends Controller
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
             //todo - make a new array where you put null values in the days array where there are no data
-            'chart' => $this->getObObjectFrom($interval->d + 1, $user), 'days' => $days->toArray(), 'user' => $user
+            'chart' => $this->getObObjectFrom($interval->d, $user), 'days' => $days->toArray(), 'user' => $user
         )); 
     }
     //TODO rewrite this function to take advantage of User->getDaysWithNulls()
     private function getObObjectFrom($numberOfDaysBack, $user) {
         //DEBUG LINE
         $logger = $this->get('logger');
+
+        $numberOfDaysBack +=2;
 
         $ob = new Highchart();
         //TODO here I can refactor since User Entity class now has function getDaysWithNulls()
@@ -169,7 +171,7 @@ class ReportController extends Controller
         $series = array(
             array("name" => "Humør",    "data" => $chartData, "zIndex" => "1", "type"=> "arearange", 'color' => '#F02E47'),
             array("name" => "Snitt med triggere",    "data" => $chartAverages, "zIndex" => "2", "type" => "line" , 'color' => '#000000'),
-            array("name" => "Søvn",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1 , 'color' => '#55F26A')
+            array("name" => "Søvn (natten før)",    "data" => $chartSleep, "type" => "column", "zIndex" => "0", "yAxis" => 1 , 'color' => '#55F26A')
             );
         $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
         // $ob->chart->type("arearange");
@@ -182,9 +184,8 @@ class ReportController extends Controller
 
         $ob->xAxis->categories($weekdayLabels);
         $ob->xAxis->title(array('text' => "Dato"));
-
         $ob->yAxis(array(
-            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false),
+            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false, 'plotLines' => array(array('value' => 0, 'color'=> 'yellow', 'dashStyle' => 'shortdash', 'width'=> 5))),
             array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true), "alignTicks" => false)
             ));
         $formatter = new Expr('
@@ -217,38 +218,4 @@ class ReportController extends Controller
         }
         return false;
     }
-
-        // public function chartAction()
- //    {
-
- //        //get the data on the user
- //        $days = $this->getUser()->getDays();
- //        $moodLow = array();
- //        $moodHigh = array();
-
- //        foreach ($days as $day) {
- //            $moodLow[] = array('y' => $day->getMoodLow() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
- //            $moodHigh[] = array('y'=>$day->getMoodHigh() -50, 'x'=>(integer)$day->getDate()->getTimestamp() . "000");
- //        }
- //        // Chart
- //        $series = array(
- //            array("name" => "Høy",    "data" => $moodHigh, "color" => "#FF0000"),
- //                   array("name" => "Lav",    "data" => $moodLow)
- //            );
-
- //        $ob = new Highchart();
- //        $ob->chart->renderTo('chart');  // The #id of the div where to render the chart
- //        //$ob->chart->type("arearange"); //TODO
- //        $ob->title->text('Humørsvingninger');
- //        $ob->subtitle->text('For ' . $days = $this->getUser()->getUsername());
- //        $ob->xAxis->type("datetime");
- //        $ob->xAxis->dateTimeLabelFormats(array('day' => "%e. %b"));
- //        $ob->xAxis->title(array('text' => "Dato"));
- //        $ob->yAxis->title(array('text'  => "Humør -50 til 50"));
- //        $ob->series($series);
-
- //        return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
- //            'chart' => $ob
- //        ));
- //    }
 }
