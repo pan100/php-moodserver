@@ -12,12 +12,42 @@
   });
 </script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
+<style>
+@media print {    .ui-accordion .ui-accordion-content {        display:block !important;    }    }
+
+.explanation {
+  text-align: center;
+}
+.red {
+  border: 2px solid red;
+}
+.orange {
+  border: 2px solid orange;
+}
+.yellow {
+  border: 2px solid yellow;
+}
+.green {
+  border: 2px solid green;
+}
+</style>
 {% endblock %}
 
 {% block body %}
 <h1>Rapport for {{user.username}}</h1>
 <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-<h2>Dagsrapporter, eldste først:</h2>
+<div id="explanation">
+<h3>Forklaring av spekter:</h3>
+Linjene viser grenser og er også implementert på søylen i appen som pasienten bruker:
+<div class="explanation red">Mani</div>
+<div class="explanation orange">Hypoman</div>
+<div class="explanation yellow">Eufori</div>
+<div class="explanation green">Normalt humør</div>
+<div class="explanation yellow">Mild depresjon</div>
+<div class="explanation orange">Moderat depresjon</div>
+<div class="explanation red">Alvorlig depresjon</div>
+</div>
+<h2>Dagsrapporter, nyeste først:</h2>
 <div id="accordion">
   {% for day in days %}
       <h3>{{day.date|format_date('eeee d. LLLL')}}</h3>

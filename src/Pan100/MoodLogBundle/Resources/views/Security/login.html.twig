@@ -6,6 +6,7 @@
 {% endif %}
 <h1>Stemningsdagboken</h1>
 <hr>
+<div class="container">
 <div class="row">
 <div class="span6">
 <form action="{{ path("fos_user_security_check") }}" method="post">
@@ -28,6 +29,7 @@
 <div class="span6">
     <!-- http://filipinobook.com/life/happy-angry/ -->
 <img src="{{ asset('bundles/pan100moodlog/images/dices.jpg') }}">
+</div>
 </div>
 </div>
 {% endblock body %}

@@ -185,7 +185,7 @@ class ReportController extends Controller
         $ob->xAxis->categories($weekdayLabels);
         $ob->xAxis->title(array('text' => "Dato"));
         $ob->yAxis(array(
-            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false, 'plotLines' => array(array('value' => 0, 'color'=> 'yellow', 'dashStyle' => 'shortdash', 'width'=> 5))),
+            array("max" => 50, "min" => -50, "title" => array('text'  => "Humør -50 til 50"), "alignTicks" => false, 'plotLines' => array(array('value' => 0, 'color'=> 'green', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => 12, 'color'=> 'yellow', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => -12, 'color'=> 'yellow', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => 25, 'color'=> 'orange', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => -25, 'color'=> 'orange', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => 37, 'color'=> 'red', 'dashStyle' => 'shortdash', 'width'=> 5), array('value' => -37, 'color'=> 'red', 'dashStyle' => 'shortdash', 'width'=> 5))),
             array("max" => 24, "min" => -0, "title" => array('text'  => "Timer søvn natten før", "opposite" => true), "alignTicks" => false)
             ));
         $formatter = new Expr('
