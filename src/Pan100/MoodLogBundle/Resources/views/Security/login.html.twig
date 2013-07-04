@@ -6,7 +6,6 @@
 {% endif %}
 <h1>Stemningsdagboken</h1>
 <hr>
-<div class="container">
 <div class="row">
 <div class="span6">
 <form action="{{ path("fos_user_security_check") }}" method="post">
@@ -26,10 +25,9 @@
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
 </form>
 </div>
-<div class="span6">
+<div class="span6 hidden-phone">
     <!-- http://filipinobook.com/life/happy-angry/ -->
 <img src="{{ asset('bundles/pan100moodlog/images/dices.jpg') }}">
-</div>
 </div>
 </div>
 {% endblock body %}
