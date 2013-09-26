@@ -85,7 +85,7 @@ class ReportController extends Controller
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
             //todo - make a new array where you put null values in the days array where there are no data
-            'chart' => $this->getObObjectFrom($interval->d, $user), 'days' => $days->toArray(), 'user' => $user
+            'chart' => $this->getObObjectFrom($interval->d+1, $user), 'days' => $days->toArray(), 'user' => $user
         )); 
     }
     //TODO rewrite this function to take advantage of User->getDaysWithNulls()
