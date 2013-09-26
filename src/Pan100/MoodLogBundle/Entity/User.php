@@ -218,7 +218,7 @@ class User extends BaseUser
         if($interval->d == 0) {
             return new \Doctrine\Common\Collections\ArrayCollection($days);
         }
-        $numberOfDaysBack = $interval->d;
+        $numberOfDaysBack = $interval->d+1;
         //create an array consisting of the number of days back
         $daysToShow = array();
         for ($i=0; $i < $numberOfDaysBack ; $i++) { 
