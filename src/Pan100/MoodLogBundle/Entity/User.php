@@ -201,11 +201,11 @@ class User extends BaseUser
     }
 
     /**
-     * get days with null values for gaps
+     * get days with null values for gaps. Send in false as argument to show report to today
      * @return \Doctrine\Common\Collections\Collection 
      */
 
-    public function getDaysWithNulls()
+    public function getDaysWithNulls($toLastOnly = true)
     {
         $days = $this->getDays()->toArray();
         if(empty($days)) {
@@ -221,7 +221,14 @@ class User extends BaseUser
         $numberOfDaysBack = $interval->d+1;
         //create an array consisting of the number of days back
         $daysToShow = array();
-        for ($i=0; $i < $numberOfDaysBack ; $i++) { 
+        $lastEntry = end($days);
+        $daysToCutOff = 0;
+        if($toLastOnly) {
+            //find out how many days have gone since the last logging
+            $daysToCutOff = $lastEntry->getDate()->diff(new \DateTime())->d;
+        }
+
+        for ($i=$daysToCutOff; $i < $numberOfDaysBack ; $i++) { 
             $date = new \DateTime();
             $date->sub(new \DateInterval('P' . $i . 'D'));
             $daysToShow[] = $date;

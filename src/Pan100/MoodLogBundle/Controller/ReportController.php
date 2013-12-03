@@ -69,8 +69,10 @@ class ReportController extends Controller
         $daysArray = $days->toArray();
         //get the first day (the last in the array) and find out how many days have passed
         $firstEntry = $days->last();
+        $lastEntry = $user->getDays()->first();
         $logger->info("first date is " . $firstEntry->getDate()->format('Y-m-d'));
-
+        $firstDate = $firstEntry->getDate()->format('Y-m-d');
+        $lastDate = $lastEntry->getDate()->format('Y-m-d');
         //return new Response("first date is " . $firstEntry->getDate()->format('Y-m-d'));
 
         //find out how many days have passed since the first day of logged data
@@ -86,29 +88,18 @@ class ReportController extends Controller
         //generate the report and show it in the view
         return $this->render('Pan100MoodLogBundle:Report:charttest.html.twig', array(
             //todo - make a new array where you put null values in the days array where there are no data
-            'chart' => $this->getObObjectFrom($interval->d, $user), 'days' => $daysArray, 'user' => $user
+            'chart' => $this->getObObjectFrom($interval->d, $user, true),'firstdate'=>$firstDate, 'lastdate'=>$lastDate, 'days' => $daysArray, 'user' => $user
         )); 
     }
     //TODO rewrite this function to take advantage of User->getDaysWithNulls()
-    private function getObObjectFrom($numberOfDaysBack, $user) {
+    private function getObObjectFrom($numberOfDaysBack, $user, $stopAtLast = false) {
         //DEBUG LINE
         $logger = $this->get('logger');
 
         $numberOfDaysBack +=2;
 
         $ob = new Highchart();
-        //TODO here I can refactor since User Entity class now has function getDaysWithNulls()
-        $days = $user->getDays();
-        //create an array consisting of the number of days back
-        $daysToShow = array();
-        for ($i=0; $i < $numberOfDaysBack ; $i++) { 
-            $date = new \DateTime();
-            $date->sub(new \DateInterval('P' . $i . 'D'));
-            $daysToShow[] = $date;
-        }
-
-        //reverse the array so that the timeline is shown correctly
-        $daysToShow = array_reverse($daysToShow);
+        $days = $user->getDaysWithNulls();
 
         $chartData = array();
         $chartAverages = array();
@@ -116,18 +107,8 @@ class ReportController extends Controller
         $weekdayLabels = array();
 
 
-        foreach ($daysToShow as $day) {
-            //figure out if this day has an entity, if not set null
-            $hasDay = false;
-            foreach ($days as $dayEntity) {
-                //check if there is a day entity
-                if($day->format('Y-m-d') == $dayEntity->getDate()->format('Y-m-d')) {
-                    $hasDay = true;
-                    $dayEntityToProcess = $dayEntity;
-                }
-            }
-            //if there is a day entity on the user for this day, add it to the chartData array
-            if($hasDay) {
+        foreach (array_reverse($days->toArray()) as $dayEntityToProcess) {
+
                 if(($dayEntityToProcess->getMoodLow() !== null) && ($dayEntityToProcess->getMoodHigh() !== null)) {
                     $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
                 }
@@ -157,16 +138,9 @@ class ReportController extends Controller
                 else {
                     $chartSleep[] = null;
                 }
-
-            }
-            else {
-                $chartData[] = array(null, null);
-                $chartAverages[] = array(null, null);
-            }
             //store the weekdays as a string for the x axis
-            $weekdayLabels[] = $day->format('Y-m-d');
+            $weekdayLabels[] = $dayEntityToProcess->getDate()->format('Y-m-d');
         }
-
 
         // Chart
         $series = array(
