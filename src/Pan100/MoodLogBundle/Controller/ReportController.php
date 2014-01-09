@@ -107,7 +107,7 @@ class ReportController extends Controller
         $weekdayLabels = array();
 
 
-        foreach (array_reverse($days->toArray()) as $dayEntityToProcess) {
+        foreach ($days->toArray() as $dayEntityToProcess) {
 
                 if(($dayEntityToProcess->getMoodLow() !== null) && ($dayEntityToProcess->getMoodHigh() !== null)) {
                     $chartData[] = array($dayEntityToProcess->getMoodLow() -50, $dayEntityToProcess->getMoodHigh() -50);
